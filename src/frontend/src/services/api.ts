@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import type {
   Book,
   StatusData,
@@ -228,7 +229,7 @@ async function fetchJSON<T>(
             typeof candidate === 'string' && candidate.trim() !== '',
         );
         if (explanation !== undefined) {
-          errorMessage = explanation;
+          errorMessage = t(explanation);
           hasServerMessage = true;
         }
       } catch (e) {
@@ -242,7 +243,10 @@ async function fetchJSON<T>(
       // Provide helpful message for gateway/proxy errors
       if (res.status === 502 || res.status === 503 || res.status === 504) {
         if (!hasServerMessage) {
-          errorMessage = `Server unavailable (${res.status}). If using a reverse proxy, check its configuration.`;
+          errorMessage = t(
+            'Server unavailable ({status}). If using a reverse proxy, check its configuration.',
+            { status: res.status },
+          );
         }
       }
 
@@ -726,13 +730,51 @@ export const checkAuth = async (): Promise<AuthResponse> => {
   return fetchJSON<AuthResponse>(API.authCheck);
 };
 
+// The human text of the settings the backend describes, by field name. Each is
+// English from the backend, translated here once rather than wherever it shows.
+const SETTINGS_TEXT = new Set([
+  'label',
+  'description',
+  'placeholder',
+  'displayName',
+  'title',
+  'reason',
+  'disabledReason',
+  'linkText',
+  'addLabel',
+  'emptyMessage',
+  'message',
+]);
+
+// The response is fresh JSON, so it is translated in place.
+function translateSettings<T>(value: T): T {
+  if (Array.isArray(value)) {
+    value.forEach(translateSettings);
+    return value;
+  }
+  if (!isRecord(value)) return value;
+  const record: Record<string, unknown> = value;
+  for (const [key, item] of Object.entries(record)) {
+    if (typeof item === 'string' && SETTINGS_TEXT.has(key)) {
+      record[key] = t(item);
+    } else if (key === 'descriptionByAuthMode' && isRecord(item)) {
+      for (const [mode, text] of Object.entries(item)) {
+        if (typeof text === 'string') item[mode] = t(text);
+      }
+    } else {
+      translateSettings(item);
+    }
+  }
+  return value;
+}
+
 // Settings API functions
 export const getSettings = async (): Promise<SettingsResponse> => {
-  return fetchJSON<SettingsResponse>(API.settings);
+  return translateSettings(await fetchJSON<SettingsResponse>(API.settings));
 };
 
 export const getSettingsTab = async (tabName: string): Promise<SettingsTab> => {
-  return fetchJSON<SettingsTab>(`${API.settings}/${tabName}`);
+  return translateSettings(await fetchJSON<SettingsTab>(`${API.settings}/${tabName}`));
 };
 
 export const updateSettings = async (
@@ -788,7 +830,7 @@ interface OnboardingConfig {
 }
 
 export const getOnboarding = async (): Promise<OnboardingConfig> => {
-  return fetchJSON<OnboardingConfig>(`${API_BASE}/onboarding`);
+  return translateSettings(await fetchJSON<OnboardingConfig>(`${API_BASE}/onboarding`));
 };
 
 export const saveOnboarding = async (
@@ -975,24 +1017,30 @@ export interface DeliveryPreferencesResponse {
 export const getAdminDeliveryPreferences = async (
   userId: number,
 ): Promise<DeliveryPreferencesResponse> => {
-  return fetchJSON<DeliveryPreferencesResponse>(
-    `${API_BASE}/admin/users/${userId}/delivery-preferences`,
+  return translateSettings(
+    await fetchJSON<DeliveryPreferencesResponse>(
+      `${API_BASE}/admin/users/${userId}/delivery-preferences`,
+    ),
   );
 };
 
 export const getAdminSearchPreferences = async (
   userId: number,
 ): Promise<DeliveryPreferencesResponse> => {
-  return fetchJSON<DeliveryPreferencesResponse>(
-    `${API_BASE}/admin/users/${userId}/search-preferences`,
+  return translateSettings(
+    await fetchJSON<DeliveryPreferencesResponse>(
+      `${API_BASE}/admin/users/${userId}/search-preferences`,
+    ),
   );
 };
 
 export const getAdminNotificationPreferences = async (
   userId: number,
 ): Promise<DeliveryPreferencesResponse> => {
-  return fetchJSON<DeliveryPreferencesResponse>(
-    `${API_BASE}/admin/users/${userId}/notification-preferences`,
+  return translateSettings(
+    await fetchJSON<DeliveryPreferencesResponse>(
+      `${API_BASE}/admin/users/${userId}/notification-preferences`,
+    ),
   );
 };
 
@@ -1059,7 +1107,13 @@ export const getAdminSettingsOverridesSummary = async (
 };
 
 export const getSelfUserEditContext = async (): Promise<SelfUserEditContext> => {
-  return fetchJSON<SelfUserEditContext>(`${API_BASE}/users/me/edit-context`);
+  const context = await fetchJSON<SelfUserEditContext>(`${API_BASE}/users/me/edit-context`);
+  translateSettings([
+    context.deliveryPreferences,
+    context.searchPreferences,
+    context.notificationPreferences,
+  ]);
+  return context;
 };
 
 export const updateSelfUser = async (
