@@ -1,3 +1,4 @@
+import { t } from '../../../i18n';
 import type { DeliveryPreferencesResponse } from '../../../services/api';
 import type {
   ActionButtonConfig,
@@ -39,50 +40,53 @@ const ROUTE_EVENT_ORDER = new Map(
   USER_ROUTE_EVENT_OPTIONS.map((option, index) => [option.value, index]),
 );
 
-const fallbackRoutesField: TableFieldConfig = {
+const getFallbackRoutesField = (): TableFieldConfig => ({
   type: 'TableField',
   key: 'USER_NOTIFICATION_ROUTES',
   label: '',
-  description:
-    'Create one route per URL. Start with All, then add event-specific routes ' +
-    'for targeted delivery. Need format examples? ' +
-    '[View Apprise URL formats](https://appriseit.com/services/).',
+  description: t(
+    'Create one route per URL. Start with All, then add event-specific routes for targeted delivery. Need format examples? [View Apprise URL formats](https://appriseit.com/services/).',
+  ),
   value: [{ event: [ROUTE_EVENT_ALL], url: '' }],
   columns: [
     {
       key: 'event',
-      label: 'Event',
+      label: t('Event'),
       type: 'multiselect',
-      options: USER_ROUTE_EVENT_OPTIONS,
+      options: USER_ROUTE_EVENT_OPTIONS.map((option) => ({
+        value: option.value,
+        label: t(option.label),
+      })),
       defaultValue: [ROUTE_EVENT_ALL],
-      placeholder: 'Select events...',
+      placeholder: t('Select events...'),
     },
     {
       key: 'url',
-      label: 'Notification URL',
+      label: t('Notification URL'),
       type: 'text',
-      placeholder: 'e.g. ntfys://ntfy.sh/username-topic',
+      placeholder: t('e.g. ntfys://ntfy.sh/username-topic'),
     },
   ],
-  addLabel: 'Add Route',
-  emptyMessage: 'No routes configured.',
-};
+  addLabel: t('Add Route'),
+  emptyMessage: t('No routes configured.'),
+});
 
-const notificationHeading: HeadingFieldConfig = {
+const getNotificationHeading = (): HeadingFieldConfig => ({
   type: 'HeadingField',
   key: 'notification_preferences_heading',
-  title: 'Notifications',
-  description:
+  title: t('Notifications'),
+  description: t(
     'Personal notification preferences for this user. Reset to inherit global defaults from the Notifications tab.',
-};
+  ),
+});
 
-const testNotificationActionField: ActionButtonConfig = {
+const getTestNotificationActionField = (): ActionButtonConfig => ({
   type: 'ActionButton',
   key: 'test_user_notification',
-  label: 'Test Notification',
-  description: 'Send a test notification to the configured personal route URLs.',
+  label: t('Test Notification'),
+  description: t('Send a test notification to the configured personal route URLs.'),
   style: 'primary',
-};
+});
 
 const normalizeRouteEvents = (rawEventValue: unknown): string[] => {
   let rawValues: unknown[] = [];
@@ -158,7 +162,7 @@ export const UserNotificationOverridesSection = ({
   const fields = notificationPreferences.fields ?? [];
   const globalValues = notificationPreferences.globalValues ?? {};
 
-  const routesField = getFieldByKey(fields, 'USER_NOTIFICATION_ROUTES', fallbackRoutesField);
+  const routesField = getFieldByKey(fields, 'USER_NOTIFICATION_ROUTES', getFallbackRoutesField());
 
   const isOverridden = (key: NotificationSettingKey): boolean => {
     if (
@@ -205,7 +209,7 @@ export const UserNotificationOverridesSection = ({
 
   return (
     <div className="space-y-4">
-      <HeadingField field={notificationHeading} />
+      <HeadingField field={getNotificationHeading()} />
 
       <FieldWrapper
         field={routesField}
@@ -230,7 +234,7 @@ export const UserNotificationOverridesSection = ({
 
       {onTestNotificationRoutes && (
         <ActionButton
-          field={testNotificationActionField}
+          field={getTestNotificationActionField()}
           onAction={() => onTestNotificationRoutes(routesValue)}
           disabled={Boolean(routesField.fromEnv)}
         />

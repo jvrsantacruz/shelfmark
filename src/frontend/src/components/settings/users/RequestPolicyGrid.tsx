@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { t } from '../../../i18n';
 import type { RequestPolicyMode } from '../../../types';
 import { DropdownList } from '../../DropdownList';
 import type {
@@ -101,6 +102,12 @@ export const RequestPolicyGrid = ({
     displayName: sourceCapability.displayName || formatSourceLabel(sourceCapability.source),
   }));
 
+  const defaultModeOptions = REQUEST_POLICY_DEFAULT_OPTIONS.map((option) => ({
+    value: option.value,
+    label: t(option.label),
+    description: t(option.description),
+  }));
+
   const hasConfigurableColumn = CONTENT_TYPES.some((contentType) =>
     isMatrixConfigurable(defaultModes[contentType]),
   );
@@ -153,7 +160,7 @@ export const RequestPolicyGrid = ({
             disabled={clearOverridesDisabled}
             className="rounded-lg border border-(--border-muted) bg-(--bg) px-3 py-1.5 text-xs font-medium transition-colors hover:bg-(--hover-surface) disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Clear all overrides
+            {t('Clear all overrides')}
           </button>
         </div>
       )}
@@ -161,15 +168,15 @@ export const RequestPolicyGrid = ({
       <div className="rounded-lg border border-(--border-muted)">
         {/* Header */}
         <div className="hidden gap-3 rounded-t-lg border-b border-(--border-muted) bg-(--bg-soft) px-3 py-2 text-xs font-medium opacity-60 sm:grid sm:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]">
-          <span>Source</span>
-          <span>Ebook</span>
-          <span>Audiobook</span>
+          <span>{t('Source')}</span>
+          <span>{t('Ebook')}</span>
+          <span>{t('Audiobook')}</span>
         </div>
 
         {/* Default row */}
         <div className="grid grid-cols-1 items-center gap-3 border-b-2 border-(--border-muted) bg-(--bg-soft) px-3 py-2.5 sm:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold">Default</p>
+            <p className="truncate text-sm font-semibold">{t('Default')}</p>
           </div>
 
           {CONTENT_TYPES.map((contentType) => {
@@ -179,7 +186,7 @@ export const RequestPolicyGrid = ({
 
             const mobileLabel = (
               <span className="mr-2 text-xs font-medium opacity-50 sm:hidden">
-                {contentType === 'ebook' ? 'Ebook:' : 'Audiobook:'}
+                {contentType === 'ebook' ? t('Ebook:') : t('Audiobook:')}
               </span>
             );
 
@@ -188,7 +195,7 @@ export const RequestPolicyGrid = ({
                 {mobileLabel}
                 {isDisabled ? (
                   <div className="w-full cursor-not-allowed rounded-lg border border-(--border-muted) bg-(--bg) px-3 py-2 text-sm opacity-60">
-                    {REQUEST_POLICY_MODE_LABELS[mode]}
+                    {t(REQUEST_POLICY_MODE_LABELS[mode])}
                   </div>
                 ) : (
                   <div
@@ -197,7 +204,7 @@ export const RequestPolicyGrid = ({
                     }`}
                   >
                     <DropdownList
-                      options={REQUEST_POLICY_DEFAULT_OPTIONS}
+                      options={defaultModeOptions}
                       value={mode}
                       onChange={(value) => {
                         const nextMode = normalizeRequestPolicyMode(getDropdownValue(value));
@@ -217,7 +224,7 @@ export const RequestPolicyGrid = ({
                     disabled={isDisabled}
                     className="shrink-0 text-xs text-sky-500 transition-colors hover:text-sky-400 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    Reset
+                    {t('Reset')}
                   </button>
                 )}
               </div>
@@ -255,7 +262,7 @@ export const RequestPolicyGrid = ({
 
                 const mobileLabel = (
                   <span className="mr-2 text-xs font-medium opacity-50 sm:hidden">
-                    {contentType === 'ebook' ? 'Ebook:' : 'Audiobook:'}
+                    {contentType === 'ebook' ? t('Ebook:') : t('Audiobook:')}
                   </span>
                 );
 
@@ -263,7 +270,7 @@ export const RequestPolicyGrid = ({
                   return (
                     <div key={key} className="flex min-h-[36px] items-center justify-center">
                       {mobileLabel}
-                      <span className="text-xs opacity-40">Not supported</span>
+                      <span className="text-xs opacity-40">{t('Not supported')}</span>
                     </div>
                   );
                 }
@@ -273,7 +280,7 @@ export const RequestPolicyGrid = ({
                     <div key={key} className="flex min-h-[36px] items-center justify-center">
                       {mobileLabel}
                       <span className="text-xs opacity-40">
-                        {REQUEST_POLICY_MODE_LABELS[effectiveMode]}
+                        {t(REQUEST_POLICY_MODE_LABELS[effectiveMode])}
                       </span>
                     </div>
                   );
@@ -289,8 +296,8 @@ export const RequestPolicyGrid = ({
                     ? [
                         {
                           value: effectiveMode,
-                          label: REQUEST_POLICY_MODE_LABELS[effectiveMode],
-                          description: modeDescriptions[effectiveMode],
+                          label: t(REQUEST_POLICY_MODE_LABELS[effectiveMode]),
+                          description: t(modeDescriptions[effectiveMode]),
                         },
                       ]
                     : [];
@@ -298,8 +305,8 @@ export const RequestPolicyGrid = ({
                   ...effectiveModeOption,
                   ...allowedModes.map((mode) => ({
                     value: mode,
-                    label: REQUEST_POLICY_MODE_LABELS[mode],
-                    description: modeDescriptions[mode],
+                    label: t(REQUEST_POLICY_MODE_LABELS[mode]),
+                    description: t(modeDescriptions[mode]),
                   })),
                 ];
 
@@ -313,7 +320,7 @@ export const RequestPolicyGrid = ({
                     >
                       {rulesDisabled ? (
                         <div className="w-full cursor-not-allowed rounded-lg border border-(--border-muted) bg-(--bg-soft) px-3 py-2 text-sm opacity-60">
-                          {REQUEST_POLICY_MODE_LABELS[effectiveMode]}
+                          {t(REQUEST_POLICY_MODE_LABELS[effectiveMode])}
                         </div>
                       ) : (
                         <DropdownList
@@ -335,9 +342,15 @@ export const RequestPolicyGrid = ({
                         type="button"
                         onClick={() => resetCellRule(sourceRow.source, contentType)}
                         className="shrink-0 text-xs text-sky-500 transition-colors hover:text-sky-400"
-                        aria-label={`Reset ${sourceRow.displayName} ${contentType} override`}
+                        aria-label={
+                          contentType === 'ebook'
+                            ? t('Reset {source} ebook override', { source: sourceRow.displayName })
+                            : t('Reset {source} audiobook override', {
+                                source: sourceRow.displayName,
+                              })
+                        }
                       >
-                        Reset
+                        {t('Reset')}
                       </button>
                     )}
                   </div>
@@ -348,8 +361,9 @@ export const RequestPolicyGrid = ({
         ) : (
           <div className="px-3 py-3">
             <p className="text-xs opacity-60">
-              Per-source settings become available when a default is set to Download or Request
-              Release.
+              {t(
+                'Per-source settings become available when a default is set to Download or Request Release.',
+              )}
             </p>
           </div>
         )}

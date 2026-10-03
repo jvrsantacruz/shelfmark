@@ -5,6 +5,7 @@ import { useSearchMode } from '../contexts/SearchModeContext';
 import { useSearchBarAutocomplete } from '../hooks/searchBar/useSearchBarAutocomplete';
 import { useDismiss } from '../hooks/useDismiss';
 import { useLatestCallback } from '../hooks/useLatestCallback';
+import { t } from '../i18n';
 import type { DynamicFieldOption } from '../services/api';
 import type { ContentType, MetadataSearchField, QueryTargetOption, SortOption } from '../types';
 import { SearchBarAutocompleteSession } from './SearchBarAutocompleteSession';
@@ -126,20 +127,20 @@ const getDefaultPlaceholder = (
   if (fallback) return fallback;
 
   if (!activeQueryTarget || activeQueryTarget.source === 'general') {
-    if (isCombinedMode) return 'Search Books & Audiobooks';
-    return contentType === 'ebook' ? 'Search Books' : 'Search Audiobooks';
+    if (isCombinedMode) return t('Search Books & Audiobooks');
+    return contentType === 'ebook' ? t('Search Books') : t('Search Audiobooks');
   }
 
   if (activeQueryTarget.source === 'manual') {
-    return 'Search releases directly…';
+    return t('Search releases directly…');
   }
 
   const field = activeQueryTarget.field;
   if (field?.placeholder) {
-    return field.placeholder;
+    return t(field.placeholder);
   }
 
-  return `Search by ${activeQueryTarget.label.toLowerCase()}…`;
+  return t('Search by {field}…', { field: t(activeQueryTarget.label).toLowerCase() });
 };
 
 const hasActiveValue = (value: string | number | boolean): boolean => {
@@ -170,14 +171,14 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       onAdvancedToggle,
       isAdvancedActive = false,
       placeholder,
-      inputAriaLabel = 'Search books',
+      inputAriaLabel = t('Search books'),
       className = '',
       inputClassName = '',
       controlsClassName = '',
-      clearButtonLabel = 'Clear search input',
-      clearButtonTitle = 'Clear search',
-      searchButtonLabel = 'Search books',
-      searchButtonTitle = 'Search',
+      clearButtonLabel = t('Clear search input'),
+      clearButtonTitle = t('Clear search'),
+      searchButtonLabel = t('Search books'),
+      searchButtonTitle = t('Search'),
       autoComplete = 'off',
       enterKeyHint = 'search',
       contentType = 'ebook',
@@ -369,7 +370,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       combinedSelectionActive,
     );
     const effectiveInputAriaLabel = activeTarget
-      ? `${inputAriaLabel}: ${activeTarget.label}`
+      ? `${inputAriaLabel}: ${t(activeTarget.label)}`
       : inputAriaLabel;
 
     const selectDropdownOpen = isSelectField && isSelectOpen && selectOptions.length > 0;
@@ -479,7 +480,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
             <span className="truncate opacity-50">{effectivePlaceholder}</span>
           );
           if (isDynamicLoading) {
-            selectTriggerContent = <span className="truncate opacity-50">Loading…</span>;
+            selectTriggerContent = <span className="truncate opacity-50">{t('Loading…')}</span>;
           } else if (selectedOption) {
             selectTriggerContent = <span className="truncate">{selectedOption.label}</span>;
           }
@@ -528,11 +529,11 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                 type="checkbox"
                 checked={Boolean(value)}
                 onChange={(e) => onChange(e.target.checked)}
-                aria-label={activeQueryField.label}
+                aria-label={t(activeQueryField.label)}
                 className="h-4 w-4 rounded-sm border-(--border-muted) text-emerald-500 focus:ring-emerald-500/50"
               />
               <span className="truncate text-sm" style={{ color: 'var(--text)' }}>
-                {activeQueryField.label}
+                {t(activeQueryField.label)}
               </span>
             </label>
           );
@@ -542,13 +543,20 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       }
     };
 
-    let selectorContentTypeLabel = 'audiobooks';
+    const selectorTarget = activeTarget ? t(activeTarget.label) : t('general');
+    let selectorAriaLabel = t('Searching audiobooks by {target}. Click to change.', {
+      target: selectorTarget,
+    });
     let selectorIcon = <AudiobookIcon />;
     if (combinedSelectionActive) {
-      selectorContentTypeLabel = 'books and audiobooks';
+      selectorAriaLabel = t('Searching books and audiobooks by {target}. Click to change.', {
+        target: selectorTarget,
+      });
       selectorIcon = <BothIcon />;
     } else if (contentType === 'ebook') {
-      selectorContentTypeLabel = 'books';
+      selectorAriaLabel = t('Searching books by {target}. Click to change.', {
+        target: selectorTarget,
+      });
       selectorIcon = <BookIcon />;
     }
 
@@ -610,14 +618,14 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                 }}
                 className="hover-action flex cursor-pointer items-center gap-1.5 rounded-l-full pr-2 pl-5 transition-colors"
                 style={{ color: 'var(--text)' }}
-                aria-label={`Searching ${selectorContentTypeLabel} by ${activeTarget?.label ?? 'general'}. Click to change.`}
+                aria-label={selectorAriaLabel}
                 aria-expanded={isSelectorOpen}
                 aria-controls={SEARCH_CONTROLS_PANEL_ID}
               >
                 {selectorIcon}
                 {showActiveTargetLabel && (
                   <span className="hidden max-w-24 truncate text-sm font-medium sm:inline">
-                    {activeTarget?.label}
+                    {activeTarget && t(activeTarget.label)}
                   </span>
                 )}
                 <svg
@@ -772,18 +780,18 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
               className="animate-fade-in-down absolute top-full right-0 left-0 z-50 mt-2 overflow-hidden rounded-2xl border shadow-xl"
               style={{ background: 'var(--bg)', borderColor: 'var(--border-muted)' }}
               role="listbox"
-              aria-label={`${effectiveInputAriaLabel} suggestions`}
+              aria-label={t('{label} suggestions', { label: effectiveInputAriaLabel })}
             >
               <div className="max-h-72 overflow-y-auto py-1.5">
                 {isAutocompleteLoading && (
                   <div className="px-5 py-3 text-sm opacity-70" style={{ color: 'var(--text)' }}>
-                    Searching…
+                    {t('Searching…')}
                   </div>
                 )}
 
                 {!isAutocompleteLoading && autocompleteOptions.length === 0 && (
                   <div className="px-5 py-3 text-sm opacity-70" style={{ color: 'var(--text)' }}>
-                    {autocompleteEmptyMessage}
+                    {t(autocompleteEmptyMessage)}
                   </div>
                 )}
 
@@ -831,7 +839,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
               <div className="shrink-0">
                 <div className="flex items-center justify-between pb-1.5">
                   <span className="text-xs font-medium tracking-wide uppercase opacity-60">
-                    Content
+                    {t('Content')}
                   </span>
                   {onAdvancedToggle && (
                     <button
@@ -861,7 +869,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                           d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
                         />
                       </svg>
-                      Options
+                      {t('Options')}
                     </button>
                   )}
                 </div>
@@ -887,7 +895,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                         <BookIcon />
                       )}
                     </span>
-                    <span>Books</span>
+                    <span>{t('Books')}</span>
                   </button>
                   <button
                     type="button"
@@ -910,12 +918,12 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                         <AudiobookIcon />
                       )}
                     </span>
-                    <span>Audiobooks</span>
+                    <span>{t('Audiobooks')}</span>
                   </button>
                   {combinedToggleAvailable && (
                     <div className="col-span-2">
                       <Tooltip
-                        content="Combined search"
+                        content={t('Combined search')}
                         position="bottom"
                         triggerClassName="w-full"
                       >
@@ -923,7 +931,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                           type="button"
                           onClick={handleCombinedModeSelect}
                           className="group w-full cursor-pointer"
-                          aria-label="Combined search"
+                          aria-label={t('Combined search')}
                         >
                           <div className="relative flex h-7 items-end">
                             <div
@@ -983,7 +991,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
               <div className="shrink-0">
                 <div className="flex items-center justify-between pb-1.5">
                   <span className="text-xs font-medium tracking-wide uppercase opacity-60">
-                    Search By
+                    {t('Search By')}
                   </span>
                   {!showContentTypeSelector && onAdvancedToggle && (
                     <button
@@ -1020,7 +1028,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                           d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
                         />
                       </svg>
-                      Options
+                      {t('Options')}
                     </button>
                   )}
                 </div>
@@ -1032,8 +1040,8 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                         type="button"
                         key={target.key}
                         onClick={() => handleQueryTargetSelect(target.key)}
-                        title={target.description || target.label}
-                        aria-label={target.label}
+                        title={t(target.description || target.label)}
+                        aria-label={t(target.label)}
                         className={`flex min-w-0 cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
                           isActive
                             ? `${searchMode === 'direct' ? 'bg-sky-700' : 'bg-emerald-600'} text-white`
@@ -1051,7 +1059,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                         }
                       >
                         {isActive && <CheckIcon />}
-                        <span className="block truncate">{target.label}</span>
+                        <span className="block truncate">{t(target.label)}</span>
                       </button>
                     );
                   })}
