@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { isApiResponseError, isTimeoutError } from '../services/api';
 
 // Shown when we genuinely have nothing better: the request failed without the server
@@ -23,7 +24,7 @@ export const CLIENT_TIMEOUT_MESSAGE =
  */
 export const describeSearchFailure = (error: unknown): string => {
   if (isTimeoutError(error)) {
-    return CLIENT_TIMEOUT_MESSAGE;
+    return t(CLIENT_TIMEOUT_MESSAGE);
   }
 
   if (isApiResponseError(error) && error.serverMessage) {
@@ -35,5 +36,5 @@ export const describeSearchFailure = (error: unknown): string => {
     return message;
   }
 
-  return UNREACHABLE_SOURCE_MESSAGE;
+  return t(UNREACHABLE_SOURCE_MESSAGE);
 };

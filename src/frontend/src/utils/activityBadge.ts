@@ -1,3 +1,5 @@
+import { t } from '../i18n';
+
 export interface ActivityStatusCounts {
   ongoing: number;
   completed: number;
@@ -32,9 +34,18 @@ export const getActivityBadgeState = (
     colorClass = 'bg-amber-500';
   }
 
+  const counts = {
+    ongoing: statusCounts.ongoing,
+    completed: statusCounts.completed,
+    failed: statusCounts.errored,
+    pending: pendingRequests,
+  };
   const title = isAdmin
-    ? `${statusCounts.ongoing} ongoing, ${statusCounts.completed} completed, ${statusCounts.errored} failed, ${pendingRequests} pending requests`
-    : `${statusCounts.ongoing} ongoing, ${statusCounts.completed} completed, ${statusCounts.errored} failed`;
+    ? t(
+        '{ongoing} ongoing, {completed} completed, {failed} failed, {pending} pending requests',
+        counts,
+      )
+    : t('{ongoing} ongoing, {completed} completed, {failed} failed', counts);
 
   return {
     total,

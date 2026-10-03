@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import type { Toast } from '../types';
 
 interface ToastContainerProps {
@@ -18,7 +19,7 @@ export const ToastContainer = ({ toasts }: ToastContainerProps) => {
           key={toast.id}
           className={`toast-notification toast-visible animate-pop-up rounded-md px-4 py-3 text-sm font-medium shadow-lg transition-all duration-300 ${toastTypeClasses[toast.type]}`}
         >
-          {toast.message}
+          {t(toast.message)}
         </div>
       ))}
     </div>
