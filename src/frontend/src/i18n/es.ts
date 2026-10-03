@@ -32,15 +32,15 @@ export const es: Catalog = {
   '{rating} out of {max}': '{rating} de {max}',
   'No Cover': 'Sin portada',
   'Book cover': 'Portada del libro',
-  'Remove selected {item}': 'Quitar {item} seleccionado',
+  'Remove selected {item}': 'Quitar {item} elegido',
   'Error Loading Releases': 'Error al cargar las versiones',
   'All Formats': 'Todos los formatos',
   Unknown: 'Desconocido',
-  'No releases found for this book.': 'No se encontraron versiones de este libro.',
+  'No releases found for this book.': 'No se encontraron versiones para este libro.',
   'No {format} releases found. Try a different format.':
-    'No se encontraron versiones en {format}. Prueba con otro formato.',
-  'No book releases found.': 'No se encontraron versiones del libro.',
-  'No audiobook releases found.': 'No se encontraron versiones del audiolibro.',
+    'No encontradas versiones para {format}. Prueba con otro formato.',
+  'No book releases found.': 'No se encontraron versiones para el libro.',
+  'No audiobook releases found.': 'No se encontraron versiones para el audiolibro.',
   'Select Audiobook →': 'Elegir audiolibro →',
   'Skip Book →': 'Omitir libro →',
   'Select Book →': 'Elegir libro →',
@@ -74,7 +74,7 @@ export const es: Catalog = {
   'Manual search query': 'Consulta de búsqueda manual',
   'Manual query': 'Consulta manual',
   'Sort releases': 'Ordenar versiones',
-  'Best Match (Default)': 'Mejor coincidencia (predeterminado)',
+  'Best Match (Default)': 'Más cercana (predeterminado)',
   'Format ({format})': 'Formato ({format})',
   Format: 'Formato',
   'Filter releases': 'Filtrar versiones',
@@ -93,7 +93,7 @@ export const es: Catalog = {
   Book: 'Libro',
   Audiobook: 'Audiolibro',
   Back: 'Atrás',
-  Myself: 'Yo mismo',
+  Myself: 'Yo',
   'Gathering debug logs... This may take a minute.':
     'Recopilando registros de depuración... Puede tardar un minuto.',
   'Debug download failed: {error}': 'Error al descargar la depuración: {error}',
@@ -157,7 +157,7 @@ export const es: Catalog = {
     'Busca libros en fuentes web y descárgalos directamente. Funciona sin configurar nada.',
   Universal: 'Universal',
   'Metadata-based search with downloads from all sources. Book and Audiobook support.':
-    'Búsqueda por metadatos con descargas de todas las fuentes. Admite libros y audiolibros.',
+    'Búsqueda por metadatos con descargas de todas las fuentes. Soporta libros y audiolibros.',
   'Disabled in Settings': 'Desactivado en Ajustes',
   'Not configured': 'Sin configurar',
   'API key required': 'Requiere clave de API',
@@ -212,7 +212,7 @@ export const es: Catalog = {
   'Standards document': 'Documento de normas',
   Other: 'Otro',
   'Musical score': 'Partitura',
-  'Most downloads': 'Más descargas',
+  'Most downloads': 'Más descargados',
   'Most relevant': 'Más relevantes',
   'Newest (publication year)': 'Más recientes (año de publicación)',
   'Oldest (publication year)': 'Más antiguos (año de publicación)',
@@ -230,7 +230,7 @@ export const es: Catalog = {
   Title: 'Título',
   Manual: 'Manual',
   List: 'Lista',
-  'Search across all supported fields.': 'Buscar en todos los campos admitidos.',
+  'Search across all supported fields.': 'Buscar en todos los campos soportados.',
   'Search for an exact ISBN.': 'Buscar un ISBN exacto.',
   'Search by author name.': 'Buscar por nombre de autor.',
   'Search by title.': 'Buscar por título.',
@@ -245,9 +245,9 @@ export const es: Catalog = {
   'Search by book title': 'Buscar por título del libro',
   'Search by series name': 'Buscar por nombre de serie',
   'Browse books from a Hardcover list': 'Explorar libros de una lista de Hardcover',
-  'No authors found': 'No se encontraron autores',
-  'No titles found': 'No se encontraron títulos',
-  'No series found': 'No se encontraron series',
+  'No authors found': 'No se encontraron los autores',
+  'No titles found': 'No se encontraron los títulos',
+  'No series found': 'No se encontraron las series',
   'No suggestions found': 'No se encontraron sugerencias',
   Rating: 'Valoración',
   Readers: 'Lectores',
@@ -262,11 +262,11 @@ export const es: Catalog = {
   'Failed to load book details': 'No se pudieron cargar los detalles del libro',
   'Failed to create request': 'No se pudo crear la solicitud',
   'Requests submitted': 'Solicitudes enviadas',
-  'Download blocked by policy': 'Descarga bloqueada por la política',
+  'Download blocked by policy': 'La política no permite esta descarga',
   'Failed to queue download': 'No se pudo poner la descarga en cola',
   'Failed to cancel/clear download': 'No se pudo cancelar o borrar la descarga',
   'Failed to retry download': 'No se pudo reintentar la descarga',
-  'This title is unavailable by policy': 'Este título no está disponible por la política',
+  'This title is unavailable by policy': 'La política no permite este título',
   'Request cancelled': 'Solicitud cancelada',
   'Failed to cancel request': 'No se pudo cancelar la solicitud',
   'Request rejected': 'Solicitud rechazada',
@@ -274,12 +274,11 @@ export const es: Catalog = {
   'Request approved': 'Solicitud aprobada',
   'Failed to approve request': 'No se pudo aprobar la solicitud',
   'Request approved: {title}': 'Solicitud aprobada: {title}',
-  'Failed to fulfil request': 'No se pudo atender la solicitud',
+  'Failed to fulfil request': 'No se pudo completar la solicitud',
   'Manual search queries release sources directly. Some sources may return limited metadata, which can affect file naming templates.':
     'La búsqueda manual consulta directamente las fuentes de versiones. Algunas fuentes pueden devolver pocos metadatos, lo que puede afectar a las plantillas de nombres de archivo.',
-  'Step {current} of {total} — Select book': 'Paso {current} de {total}: seleccionar libro',
-  'Step {current} of {total} — Select audiobook':
-    'Paso {current} de {total}: seleccionar audiolibro',
+  'Step {current} of {total} — Select book': 'Paso {current} de {total}: elegir libro',
+  'Step {current} of {total} — Select audiobook': 'Paso {current} de {total}: elegir audiolibro',
   'Checking authentication…': 'Comprobando la autenticación…',
   'Loading configuration…': 'Cargando la configuración…',
   'Download queued, but the proxy interrupted the response. Status will refresh shortly.':
@@ -306,15 +305,15 @@ export const es: Catalog = {
   'Failed to fetch status': 'No se pudo obtener el estado',
   '{title} added to queue': '{title} añadido a la cola',
   '{title} started downloading': '{title} ha empezado a descargarse',
-  '{title} completed': '{title} completado',
+  '{title} completed': 'Descarga completada: {title}',
   '{title}: {message}': '{title}: {message}',
   'Book {id} is missing source context': 'Al libro {id} le falta el contexto de la fuente',
   'Request submitted: {title}': 'Solicitud enviada: {title}',
   'Unknown source': 'Fuente desconocida',
-  '#{position} of {count} in {name}': '#{position} de {count} en {name}',
-  '#{position} in {name}': '#{position} en {name}',
+  '#{position} of {count} in {name}': 'N.º {position} de {count} en {name}',
+  '#{position} in {name}': 'N.º {position} en {name}',
   'Unable to reach download source. Network may be restricted or mirrors blocked.':
-    'No se puede llegar a la fuente de descarga. Puede que la red esté restringida o los espejos bloqueados.',
+    'No se puede conectar con la fuente de descarga. Puede que la red esté restringida o los espejos bloqueados.',
   'The search took longer than the server said it would. Raise the release search timeout if your setup is simply slow.':
     'La búsqueda ha tardado más de lo que indicó el servidor. Sube el tiempo de espera de la búsqueda de versiones si tu instalación simplemente es lenta.',
   'Search by ISBN': 'Buscar por ISBN',
@@ -335,14 +334,14 @@ export const es: Catalog = {
   'First author only, when metadata lists several':
     'Solo el primer autor, cuando los metadatos indican varios',
   'Full title': 'Título completo',
-  'Title as provided by metadata': 'Título tal como lo dan los metadatos',
+  'Title as provided by metadata': 'Título tal como aparece en los metadatos',
   'Primary title': 'Título principal',
   'Title without the subtitle suffix': 'Título sin el subtítulo',
   'Publication year': 'Año de publicación',
   'Release language code, so translations do not share a folder':
     'Código de idioma de la versión, para que las traducciones no compartan carpeta',
   User: 'Usuario',
-  'Requesting user': 'Usuario que solicita',
+  'Requesting user': 'Solicitante',
   'Series name': 'Nombre de la serie',
   'Series position': 'Posición en la serie',
   'Book position in the series': 'Posición del libro en la serie',
@@ -371,11 +370,11 @@ export const es: Catalog = {
   'Unable to load account details.': 'No se pudieron cargar los datos de la cuenta.',
   'Some settings require a container restart to take effect':
     'Algunos ajustes requieren reiniciar el contenedor para aplicarse',
-  'No tab selected': 'No hay ninguna pestaña seleccionada',
+  'No tab selected': 'No hay ninguna pestaña elegida',
   'Opening Users tab...': 'Abriendo la pestaña Usuarios...',
   'Close settings': 'Cerrar ajustes',
   'Loading settings...': 'Cargando ajustes...',
-  'Select a category to configure': 'Selecciona una categoría para configurarla',
+  'Select a category to configure': 'Elige una categoría para configurarla',
   'Go back': 'Volver',
   'Unknown field type': 'Tipo de campo desconocido',
   'Saving...': 'Guardando...',
@@ -392,13 +391,13 @@ export const es: Catalog = {
   'User overridden': 'Personalizado por usuario',
   Reset: 'Restablecer',
   'Password field': 'Campo de contraseña',
-  'Select categories...': 'Seleccionar categorías...',
+  'Select categories...': 'Elegir categorías...',
   'Show all {count} options': 'Mostrar las {count} opciones',
   'Text field': 'Campo de texto',
   'Move up': 'Subir',
   'Move down': 'Bajar',
   'Number field': 'Campo numérico',
-  'Select...': 'Seleccionar...',
+  'Select...': 'Elegir...',
   'Running...': 'Ejecutando...',
   'Remove {tag}': 'Quitar {tag}',
   'Add item': 'Añadir elemento',
@@ -412,7 +411,7 @@ export const es: Catalog = {
   Default: 'Predeterminado',
   'Ebook:': 'Libro electrónico:',
   'Audiobook:': 'Audiolibro:',
-  'Not supported': 'No compatible',
+  'Not supported': 'No soportado',
   'Reset {source} ebook override':
     'Restablecer la personalización de libros electrónicos de {source}',
   'Reset {source} audiobook override': 'Restablecer la personalización de audiolibros de {source}',
@@ -422,13 +421,12 @@ export const es: Catalog = {
   Folder: 'Carpeta',
   'Email (SMTP)': 'Correo electrónico (SMTP)',
   'Output Mode': 'Modo de salida',
-  'Choose where completed book files are sent.':
-    'Elige adónde se envían los archivos de libros completados.',
+  'Choose where completed book files are sent.': 'Elige adónde se envían los libros descargados.',
   Destination: 'Destino',
   'Directory where downloaded files are saved.':
-    'Directorio donde se guardan los archivos descargados.',
+    'Carpeta donde se guardan los archivos descargados.',
   "Directory for this user's audiobook downloads.":
-    'Directorio para las descargas de audiolibros de este usuario.',
+    'Carpeta para las descargas de audiolibros de este usuario.',
   'Grimmory library to upload into.': 'Biblioteca de Grimmory a la que subir los archivos.',
   Path: 'Ruta',
   'Grimmory library path for uploads.': 'Ruta de la biblioteca de Grimmory para las subidas.',
@@ -437,7 +435,7 @@ export const es: Catalog = {
     'Dirección de correo de este usuario en el modo de salida por correo electrónico.',
   'Download to Browser': 'Descargar en el navegador',
   'Automatically download completed files to this browser for the selected content types.':
-    'Descarga automáticamente en este navegador los archivos completados de los tipos de contenido seleccionados.',
+    'Descarga automáticamente en este navegador los archivos completados de los tipos de contenido elegidos.',
   'Delivery Preferences': 'Preferencias de entrega',
   'Editing values here creates per-user settings. Use Reset to inherit global values.':
     'Editar estos valores crea ajustes propios del usuario. Usa Restablecer para heredar los valores globales.',
@@ -492,7 +490,7 @@ export const es: Catalog = {
   'Create one route per URL. Start with All, then add event-specific routes for targeted delivery. Need format examples? [View Apprise URL formats](https://appriseit.com/services/).':
     'Crea una ruta por URL. Empieza con Todos y añade rutas por evento para envíos concretos. ¿Necesitas ejemplos de formato? [Ver formatos de URL de Apprise](https://appriseit.com/services/).',
   Event: 'Evento',
-  'Select events...': 'Seleccionar eventos...',
+  'Select events...': 'Elegir eventos...',
   'Notification URL': 'URL de notificación',
   'e.g. ntfys://ntfy.sh/username-topic': 'p. ej. ntfys://ntfy.sh/username-topic',
   'Add Route': 'Añadir ruta',
@@ -548,7 +546,7 @@ export const es: Catalog = {
   'Hide the local login form': 'Ocultar el formulario de acceso local',
   'Disable username/password login': 'Desactivar el acceso con usuario y contraseña',
   'Skip login page, redirect straight to OIDC':
-    'Saltar la página de acceso y redirigir directamente a OIDC',
+    'Omitir la página de acceso y redirigir directamente a OIDC',
   'Unknown custom settings component: {component}':
     'Componente de ajustes personalizado desconocido: {component}',
   'Naming template schema is unavailable.':
@@ -562,7 +560,7 @@ export const es: Catalog = {
   'Insert variable': 'Insertar variable',
   '{description}: {value}': '{description}: {value}',
   'No user selected for notification test.':
-    'No hay ningún usuario seleccionado para la prueba de notificación.',
+    'No hay ningún usuario elegido para la prueba de notificación.',
   'Request policy schema is unavailable for this tab.':
     'El esquema de la política de solicitudes no está disponible en esta pestaña.',
   'Release Sources': 'Fuentes de versiones',
@@ -585,7 +583,7 @@ export const es: Catalog = {
   Local: 'Local',
   Proxy: 'Proxy',
   'Unsupported onboarding field type: {type}':
-    'Tipo de campo no admitido en la configuración inicial: {type}',
+    'Tipo de campo no soportado en la configuración inicial: {type}',
   'Failed to load setup wizard': 'No se pudo cargar el asistente de configuración',
   'Setup skipped - using defaults': 'Configuración omitida: se usan los valores predeterminados',
   'Failed to skip setup': 'No se pudo omitir la configuración',
@@ -627,7 +625,7 @@ export const es: Catalog = {
   'Hardcover Lists ({count})': 'Listas de Hardcover ({count})',
   'Hardcover Lists': 'Listas de Hardcover',
   'Failed to load Hardcover lists': 'No se pudieron cargar las listas de Hardcover',
-  'No writable Hardcover targets': 'No hay listas de Hardcover en las que se pueda escribir',
+  'No writable Hardcover targets': 'No hay listas de Hardcover editables',
   'Added to {list}': 'Añadido a {list}',
   'Removed from {list}': 'Quitado de {list}',
   'Failed to update Hardcover list': 'No se pudo actualizar la lista de Hardcover',
@@ -652,8 +650,8 @@ export const es: Catalog = {
   Pages: 'Páginas',
   Grabs: 'Descargas',
   'Unsupported format ({formats}) - Shelfmark cannot process this release':
-    'Formato no admitido ({formats}): Shelfmark no puede procesar esta versión',
-  Unsupported: 'No admitido',
+    'Formato no soportado ({formats}): Shelfmark no puede procesar esta versión',
+  Unsupported: 'No soportado',
   Online: 'En línea',
   Offline: 'Desconectado',
   'All languages': 'Todos los idiomas',
@@ -885,7 +883,7 @@ export const es: Catalog = {
     'Renombrar las descargas de un solo archivo; mantener las de varios archivos agrupadas en su carpeta de origen. No usar con carpetas de importación.',
   'Specific Library': 'Biblioteca concreta',
   'Upload directly into the selected library path.':
-    'Subir directamente a la ruta de biblioteca seleccionada.',
+    'Subir directamente a la ruta de biblioteca elegida.',
   Bookdrop: 'Bookdrop',
   'Upload into Bookdrop and review metadata before importing to a library.':
     'Subir a Bookdrop y revisar los metadatos antes de importar a una biblioteca.',
@@ -931,10 +929,10 @@ export const es: Catalog = {
   'Default Search Filters': 'Filtros de búsqueda predeterminados',
   'Default filters applied to searches. Can be overridden using advanced search options.':
     'Filtros que se aplican por defecto a las búsquedas. Se pueden cambiar con las opciones de búsqueda avanzada.',
-  'Supported Book Formats': 'Formatos de libro admitidos',
+  'Supported Book Formats': 'Formatos de libro soportados',
   'Book formats to include in search results. ZIP/RAR archives are extracted automatically and book files are used if found.':
     'Formatos de libro que se incluyen en los resultados de búsqueda. Los archivos ZIP/RAR se extraen automáticamente y se usan los archivos de libro que contengan.',
-  'Supported Audiobook Formats': 'Formatos de audiolibro admitidos',
+  'Supported Audiobook Formats': 'Formatos de audiolibro soportados',
   'Audiobook formats to include in search results. ZIP/RAR archives are extracted automatically and audiobook files are used if found.':
     'Formatos de audiolibro que se incluyen en los resultados de búsqueda. Los archivos ZIP/RAR se extraen automáticamente y se usan los archivos de audiolibro que contengan.',
   'Direct mode uses the optional Direct Download source. Universal mode uses metadata search with whichever release sources you have enabled.':
@@ -954,7 +952,7 @@ export const es: Catalog = {
     'Mostrar la opción de buscar y descargar a la vez un libro y su audiolibro.',
   'Always Use Combined Search': 'Usar siempre la búsqueda combinada',
   "Force combined search whenever it's available. Locks the combined toggle on.":
-    'Forzar la búsqueda combinada siempre que esté disponible. Bloquea el interruptor combinado en activado.',
+    'Forzar la búsqueda combinada siempre que esté disponible. Deja fijo en activado el interruptor de búsqueda combinada.',
   'Universal Mode Settings': 'Ajustes del modo Universal',
   'Configure metadata providers and release sources for Universal search mode.':
     'Configura los proveedores de metadatos y las fuentes de versiones del modo de búsqueda Universal.',
@@ -974,7 +972,7 @@ export const es: Catalog = {
     'Solo audiolibros. Se rellena en los resultados de MyAnonamouse que llegan por Prowlarr cuando hay un ID de sesión de MAM en los ajustes de Prowlarr.',
   'Show Bitrate Column': 'Mostrar columna de tasa de bits',
   "Audiobooks only. AudiobookBay lists it for most releases. In Prowlarr results it needs a MAM session ID and is read from the MyAnonamouse uploader's tags, so some releases won't have one. Other Prowlarr indexers fill it only if they report a bitrate attribute, which most don't.":
-    'Solo audiolibros. AudiobookBay la indica en la mayoría de las versiones. En los resultados de Prowlarr necesita un ID de sesión de MAM y se lee de las etiquetas del autor de la subida en MyAnonamouse, así que algunas versiones no la tendrán. Otros indexadores de Prowlarr solo la rellenan si informan de un atributo de tasa de bits, y la mayoría no lo hace.',
+    'Solo audiolibros. AudiobookBay la indica en la mayoría de las versiones. En los resultados de Prowlarr necesita un ID de sesión de MAM y se lee de las etiquetas del publicador en MyAnonamouse, así que algunas versiones no la tendrán. Otros indexadores de Prowlarr solo la rellenan si informan de un atributo de tasa de bits, y la mayoría no lo hace.',
   'Certificate Validation': 'Validación de certificados',
   'Controls SSL/TLS certificate verification for outbound connections. Disable for self-signed certificates on internal services (e.g. OIDC providers, Prowlarr).':
     'Controla la verificación de certificados SSL/TLS en las conexiones salientes. Desactívala para certificados autofirmados en servicios internos (p. ej. proveedores OIDC, Prowlarr).',
@@ -1018,7 +1016,7 @@ export const es: Catalog = {
     'URL del proxy HTTPS (déjalo vacío para usar el proxy HTTP también para HTTPS)',
   'SOCKS5 Proxy': 'Proxy SOCKS5',
   'SOCKS5 proxy URL. Supports auth: socks5://user:pass@host:port':
-    'URL del proxy SOCKS5. Admite autenticación: socks5://user:pass@host:port',
+    'URL del proxy SOCKS5. Soporta autenticación: socks5://user:pass@host:port',
   'No Proxy': 'Sin proxy',
   'Comma-separated hosts to bypass proxy (e.g., localhost,127.0.0.1,10.*,*.local)':
     'Hosts separados por comas que no pasan por el proxy (p. ej., localhost,127.0.0.1,10.*,*.local)',
@@ -1113,12 +1111,12 @@ export const es: Catalog = {
   'Enable Direct Download Source': 'Activar la fuente Descarga directa',
   'Show Direct Download in release-source lists and allow Direct mode searches. Add your own mirror URLs in the Mirrors tab before using it.':
     'Mostrar Descarga directa en las listas de fuentes y permitir búsquedas en modo Directo. Añade tus propias URL de espejos en la pestaña Espejos antes de usarla.',
-  'Detect Language From Distant Path': 'Detectar el idioma por la ruta remota',
+  'Detect Language From Distant Path': 'Detectar el idioma por la ruta en la fuente',
   'When language metadata is missing or unknown, parse the distant path (file path shown in search results) for language tags like [BD FR] or [En]. Also enables local language filtering so lgli files without AA language metadata are not excluded before the distant path can be checked.':
-    'Si falta el idioma en los metadatos o es desconocido, buscar etiquetas de idioma como [BD FR] o [En] en la ruta remota (la ruta del archivo que aparece en los resultados). También activa el filtrado de idioma local, para que los archivos lgli sin idioma en los metadatos de AA no se descarten antes de revisar la ruta remota.',
+    'Si falta el idioma en los metadatos o es desconocido, buscar etiquetas de idioma como [BD FR] o [En] en la ruta en la fuente (la ruta del archivo que aparece en los resultados). También activa el filtrado de idioma local, para que los archivos lgli sin idioma en los metadatos de AA no se descarten antes de revisar la ruta en la fuente.',
   'Account Donator Key': 'Clave de donante de la cuenta',
   'Enables fast download access on AA. Get this from your donator account page.':
-    'Activa las descargas rápidas en AA. La encontrarás en la página de tu cuenta de donante.',
+    'Activar las descargas rápidas en AA. La encontrarás en la página de tu cuenta de donante.',
   'Source Priority': 'Prioridad de fuentes',
   'Sources are tried in order until a download succeeds. Mirror-backed entries unlock automatically when you configure their mirrors.':
     'Las fuentes se prueban en orden hasta que una descarga funciona. Las que dependen de espejos se desbloquean solas cuando configuras sus espejos.',
@@ -1127,7 +1125,7 @@ export const es: Catalog = {
     'Se prueban siempre primero, sin esperas ni bypass.',
   'Slow downloads': 'Descargas lentas',
   'Fallback sources, may have waiting. Requires bypasser. Drag to reorder.':
-    'Fuentes de respaldo, puede haber espera. Requiere el bypass. Arrastra para reordenar.',
+    'Fuentes de respaldo, puede haber espera. Requiere el bypasser. Arrastra para reordenar.',
   'Max Retries': 'Máximo de reintentos',
   'Maximum retry attempts for failed downloads.':
     'Número máximo de reintentos para las descargas fallidas.',
@@ -1135,7 +1133,7 @@ export const es: Catalog = {
   'Wait time between download retry attempts.': 'Tiempo de espera entre reintentos de descarga.',
   'Release Search Timeout (seconds)': 'Tiempo límite de búsqueda de versiones (segundos)',
   'How long one release search may run before it gives up and reports why. A first search on a cold start pays for a browser solve, so leave room for one. If you use a reverse proxy, its read timeout should be at least this high or it will cut the search off with a 504 first.':
-    'Cuánto puede durar una búsqueda de versiones antes de rendirse e indicar el motivo. La primera búsqueda tras arrancar tiene que resolver el reto en el navegador, así que deja margen para ello. Si usas un proxy inverso, su tiempo de lectura debe ser al menos este, o cortará la búsqueda antes con un 504.',
+    'Cuánto puede durar una búsqueda de versiones antes de rendirse e indicar el motivo. La primera búsqueda tras arrancar tiene que resolver la prueba de validación en el navegador, así que deja margen para ello. Si usas un proxy inverso, su tiempo de lectura debe ser al menos este, o cortará la búsqueda antes con un 504.',
   'Content-Type Routing': 'Destino por tipo de contenido',
   'Route downloads to different folders based on content type. Only applies to Direct download source.':
     'Enviar las descargas a carpetas distintas según el tipo de contenido. Solo se aplica a la fuente Descarga directa.',
@@ -1152,21 +1150,21 @@ export const es: Catalog = {
   'Enable Cloudflare Bypass': 'Activar el bypass de Cloudflare',
   'Attempt to bypass Cloudflare protection on download sites.':
     'Intentar saltar la protección de Cloudflare en los sitios de descarga.',
-  'Use External Bypasser': 'Usar un bypass externo',
+  'Use External Bypasser': 'Usar un bypasser externo',
   'Use FlareSolverr or similar external service instead of built-in bypasser. Caution: May have limitations with custom DNS, Tor and proxies. You may experience slower downloads and and poorer reliability compared to the internal bypasser.':
-    'Usar FlareSolverr u otro servicio externo parecido en lugar del bypass integrado. Atención: puede tener limitaciones con DNS personalizados, Tor y proxies. Las descargas pueden ser más lentas y menos fiables que con el bypass interno.',
-  'External Bypasser URL': 'URL del bypass externo',
+    'Usar FlareSolverr u otro servicio externo parecido en lugar del bypasser integrado. Atención: puede tener limitaciones con DNS personalizados, Tor y proxies. Las descargas pueden ser más lentas y menos fiables que con el bypasser interno.',
+  'External Bypasser URL': 'URL del bypasser externo',
   'URL of the external bypasser service (e.g., FlareSolverr).':
-    'URL del servicio de bypass externo (p. ej., FlareSolverr).',
-  'External Bypasser Path': 'Ruta del bypass externo',
-  'API path for the external bypasser.': 'Ruta de la API del bypass externo.',
-  'External Bypasser Timeout (ms)': 'Tiempo de espera del bypass externo (ms)',
+    'URL del bypasser externo (p. ej., FlareSolverr).',
+  'External Bypasser Path': 'Ruta del bypasser externo',
+  'API path for the external bypasser.': 'Ruta de la API del bypasser externo.',
+  'External Bypasser Timeout (ms)': 'Tiempo de espera del bypasser externo (ms)',
   'Timeout for external bypasser requests in milliseconds.':
-    'Tiempo de espera de las peticiones al bypass externo, en milisegundos.',
-  'Page Read Timeout (seconds)': 'Tiempo de lectura de página (segundos)',
+    'Tiempo de espera de las peticiones al bypasser externo, en milisegundos.',
+  'Page Read Timeout (seconds)': 'Tiempo de espera de lectura de página (segundos)',
   'How long to wait for a solved page to produce its content before the bypass is retried. Raise it if solves succeed but searches still fail.':
-    'Cuánto esperar a que una página ya resuelta muestre su contenido antes de reintentar el bypass. Súbelo si los retos se resuelven pero las búsquedas siguen fallando.',
-  'Bypasser Idle Timeout (seconds)': 'Tiempo de inactividad del bypass (segundos)',
+    'Cuánto esperar a que una página ya resuelta muestre su contenido antes de reintentar el bypass. Súbelo si las pruebas de validación se resuelven pero las búsquedas siguen fallando.',
+  'Bypasser Idle Timeout (seconds)': 'Tiempo de inactividad del bypasser (segundos)',
   'How long the bypass helper process may sit unused before it is shut down. Higher keeps more searches fast, lower frees memory sooner.':
     'Cuánto puede estar sin usarse el proceso auxiliar del bypass antes de cerrarse. Un valor alto mantiene rápidas más búsquedas; uno bajo libera memoria antes.',
   "Add your own Anna's Archive mirror URLs here. Auto mode will try them in the order listed below.":
@@ -1203,15 +1201,15 @@ export const es: Catalog = {
   'Custom Script JSON Payload': 'Datos JSON para el script personalizado',
   'Send a JSON payload to the script via stdin. Useful for multi-file imports (audiobooks) or richer metadata without relying on path parsing.':
     'Enviar datos JSON al script por stdin. Útil para importar varios archivos (audiolibros) o tener más metadatos sin depender de analizar la ruta.',
-  'Remote Path Mappings': 'Correspondencias de rutas remotas',
+  'Remote Path Mappings': 'Asociaciones de rutas remotas',
   'Map download client paths to paths inside Shelfmark. Needed when volume mounts differ between containers.':
-    'Hacer corresponder las rutas del cliente de descargas con rutas dentro de Shelfmark. Hace falta cuando los volúmenes se montan de forma distinta en cada contenedor.',
-  'Completed Path Wait (seconds)': 'Espera de la ruta completada (segundos)',
+    'Asociar las rutas del cliente de descargas con rutas dentro de Shelfmark. Hace falta cuando los volúmenes se montan de forma distinta en cada contenedor.',
+  'Completed Path Wait (seconds)': 'Espera de archivos completados (segundos)',
   'How long to wait after a torrent or usenet client reports completion for the completed file path to become visible to Shelfmark. Increase this for seedbox or remote-sync workflows.':
     'Cuánto esperar, después de que el cliente de torrent o usenet indique que ha terminado, a que Shelfmark vea la ruta del archivo completado. Súbelo si usas una seedbox o sincronización remota.',
-  'Path Mappings': 'Correspondencias de rutas',
-  'Add Mapping': 'Añadir correspondencia',
-  'No mappings configured.': 'No hay correspondencias configuradas.',
+  'Path Mappings': 'Asociaciones de rutas',
+  'Add Mapping': 'Añadir asociación',
+  'No mappings configured.': 'No hay asociaciones configuradas.',
   'Cover Image Cache': 'Caché de portadas',
   'Cache book cover images locally for faster loading. Works for both Direct Download and Universal mode.':
     'Guardar en caché local las portadas de los libros para que carguen más rápido. Funciona en Descarga directa y en modo Universal.',
@@ -1249,14 +1247,13 @@ export const es: Catalog = {
   'Select content type...': 'Elegir tipo de contenido...',
   'Select mode...': 'Elegir modo...',
   'Completed Path Wait must be a number of seconds':
-    'La espera de la ruta completada debe ser un número de segundos',
+    'La espera de archivos completados debe ser un número de segundos',
   'Completed Path Wait must be between 0 and {max} seconds':
-    'La espera de la ruta completada debe estar entre 0 y {max} segundos',
-  'Remote path mappings must be a list':
-    'Las correspondencias de rutas remotas deben ser una lista',
+    'La espera de archivos completados debe estar entre 0 y {max} segundos',
+  'Remote path mappings must be a list': 'Las asociaciones de rutas remotas deben ser una lista',
   'Failed to clear cache: {error}': 'No se pudo borrar la caché: {error}',
-  'Cleared {count} cached cover images.': 'Se han borrado {count} portadas en caché.',
-  'Cleared {count} cached entries.': 'Se han borrado {count} entradas en caché.',
+  'Cleared {count} cached cover images.': 'Portadas borradas de la caché: {count}.',
+  'Cleared {count} cached entries.': 'Entradas borradas de la caché: {count}.',
   "Books Naming Template cannot contain '/' or '\\' in Rename mode. Use Organize mode to create folders.":
     "La plantilla de nombre de libros no puede contener '/' ni '\\' en el modo Renombrar. Usa el modo Organizar para crear carpetas.",
   "Audiobooks Naming Template cannot contain '/' or '\\' in Rename mode. Use Organize mode to create folders.":
@@ -1283,7 +1280,7 @@ export const es: Catalog = {
     'La dirección del remitente debe ser una dirección de correo válida',
   'Download to Browser must be a list.': 'Descargar en el navegador debe ser una lista.',
   "Download to Browser contains an unsupported content type '{content_type}'. Supported values: {allowed}":
-    "Descargar en el navegador contiene un tipo de contenido no admitido '{content_type}'. Valores admitidos: {allowed}",
+    "Descargar en el navegador contiene un tipo de contenido no soportado '{content_type}'. Valores soportados: {allowed}",
   'Audiobook destination is writable: {path} (using the Books destination)':
     'Se puede escribir en el destino de audiolibros: {path} (se usa el destino de libros)',
   'Books destination is writable: {path}': 'Se puede escribir en el destino de libros: {path}',
@@ -1305,25 +1302,25 @@ export const es: Catalog = {
   'Send a test notification to all configured global route URLs.':
     'Enviar una notificación de prueba a todas las URL de las rutas globales configuradas.',
   'Found {count} invalid global notification route event value(s). Fix route events before running a test.':
-    'Hay {count} valor(es) de evento no válidos en las rutas de notificación globales. Corrige los eventos de las rutas antes de hacer una prueba.',
+    'Valores de evento no válidos en las rutas de notificación globales: {count}. Corrige los eventos de las rutas antes de hacer una prueba.',
   'Found {count} invalid personal notification route event value(s). Fix route events before running a test.':
-    'Hay {count} valor(es) de evento no válidos en las rutas de notificación personales. Corrige los eventos de las rutas antes de hacer una prueba.',
+    'Valores de evento no válidos en las rutas de notificación personales: {count}. Corrige los eventos de las rutas antes de hacer una prueba.',
   'Found {count} invalid global notification URL(s). Fix route URLs before running a test.':
-    'Hay {count} URL de notificación globales no válidas. Corrige las URL de las rutas antes de hacer una prueba.',
+    'URL de notificación globales no válidas: {count}. Corrige las URL de las rutas antes de hacer una prueba.',
   'Found {count} invalid personal notification URL(s). Fix route URLs before running a test.':
-    'Hay {count} URL de notificación personales no válidas. Corrige las URL de las rutas antes de hacer una prueba.',
+    'URL de notificación personales no válidas: {count}. Corrige las URL de las rutas antes de hacer una prueba.',
   'Add at least one global notification URL route first.':
     'Añade primero al menos una ruta con URL de notificación global.',
   'Add at least one personal notification URL route first.':
     'Añade primero al menos una ruta con URL de notificación personal.',
   'Found {count} invalid global notification route event value(s).':
-    'Hay {count} valor(es) de evento no válidos en las rutas de notificación globales.',
+    'Valores de evento no válidos en las rutas de notificación globales: {count}.',
   'Found {count} invalid global notification URL(s). Use URL values with a valid scheme, e.g. discord://... or ntfys://...':
-    'Hay {count} URL de notificación globales no válidas. Usa URL con un esquema válido, p. ej. discord://... o ntfys://...',
+    'URL de notificación globales no válidas: {count}. Usa URL con un esquema válido, p. ej. discord://... o ntfys://...',
   'Found {count} invalid personal notification route event value(s).':
-    'Hay {count} valor(es) de evento no válidos en las rutas de notificación personales.',
+    'Valores de evento no válidos en las rutas de notificación personales: {count}.',
   'Found {count} invalid personal notification URL(s). Use URL values with a valid scheme, e.g. discord://... or ntfys://...':
-    'Hay {count} URL de notificación personales no válidas. Usa URL con un esquema válido, p. ej. discord://... o ntfys://...',
+    'URL de notificación personales no válidas: {count}. Usa URL con un esquema válido, p. ej. discord://... o ntfys://...',
   'Notification sent to {count} URL(s) ({failed} URL(s) failed)':
     'Notificación enviada a {count} URL ({failed} URL con fallo)',
   'Notification sent to {count} URL(s)': 'Notificación enviada a {count} URL',
@@ -1389,9 +1386,9 @@ export const es: Catalog = {
   'Auto-Provision Users': 'Crear usuarios automáticamente',
   'Automatically create a user account on first OIDC login. When disabled, users must be pre-created by an admin.':
     'Crear automáticamente la cuenta de usuario la primera vez que entra por OIDC. Si está desactivado, un administrador debe crear antes los usuarios.',
-  'Login Button Label': 'Texto del botón de entrada',
+  'Login Button Label': 'Texto del botón de acceso',
   'Custom label for the OIDC sign-in button on the login page.':
-    'Texto personalizado del botón para entrar con OIDC en la página de entrada.',
+    'Texto personalizado del botón para entrar con OIDC en la página de acceso.',
   'Fetch the OIDC discovery document and validate configuration.':
     'Descargar el documento de descubrimiento de OIDC y validar la configuración.',
   'Environment-Only Options': 'Opciones solo por entorno',
@@ -1444,10 +1441,10 @@ export const es: Catalog = {
     'Ajusta el acceso por fuente. Las reglas de una fuente solo pueden ser iguales o más restrictivas que la opción predeterminada de arriba.',
   'Default Ebook Mode': 'Modo predeterminado para libros electrónicos',
   'Sets the baseline for all ebook sources.':
-    'Fija la base para todas las fuentes de libros electrónicos.',
+    'Valor base para todas las fuentes de libros electrónicos.',
   'Default Audiobook Mode': 'Modo predeterminado para audiolibros',
   'Sets the baseline for all audiobook sources.':
-    'Fija la base para todas las fuentes de audiolibros.',
+    'Valor base para todas las fuentes de audiolibros.',
   'Add Rule': 'Añadir regla',
   'No request policy rules configured.': 'No hay reglas de solicitud configuradas.',
   'Max pending requests per user': 'Máximo de solicitudes pendientes por usuario',
@@ -1457,9 +1454,9 @@ export const es: Catalog = {
   'Let users add a note when they submit a request.':
     'Permitir que los usuarios añadan una nota al enviar una solicitud.',
   "VISIBLE_SELF_SETTINGS_SECTIONS contains an unsupported section '{section}'. Supported values: {allowed}":
-    "VISIBLE_SELF_SETTINGS_SECTIONS contiene una sección no admitida '{section}'. Valores admitidos: {allowed}",
+    "VISIBLE_SELF_SETTINGS_SECTIONS contiene una sección no soportada '{section}'. Valores soportados: {allowed}",
   'BOOK_LANGUAGE contains an unsupported language: {entry}':
-    'BOOK_LANGUAGE contiene un idioma no admitido: {entry}',
+    'BOOK_LANGUAGE contiene un idioma no soportado: {entry}',
   '{key} must be a valid metadata provider name or empty':
     '{key} debe ser un nombre de proveedor de metadatos válido o estar vacío',
   '{key} must be a valid release source name or empty':
@@ -1474,10 +1471,10 @@ export const es: Catalog = {
     "{row}: el modo '{value}' no se permite en las reglas por fuente (usa en su lugar los valores predeterminados por tipo de contenido)",
   "{row}: unknown source '{source}'": "{row}: fuente desconocida '{source}'",
   "{row}: source '{source}' does not support content_type '{content_type}'":
-    "{row}: la fuente '{source}' no admite content_type '{content_type}'",
+    "{row}: la fuente '{source}' no soporta content_type '{content_type}'",
   'Updated {count} setting(s). Skipped (set via env): {keys}':
-    'Se han actualizado {count} ajuste(s). Omitidos (definidos por entorno): {keys}',
-  'Updated {count} setting(s)': 'Se han actualizado {count} ajuste(s)',
+    'Ajustes actualizados: {count}. Omitidos (definidos por entorno): {keys}',
+  'Updated {count} setting(s)': 'Ajustes actualizados: {count}',
   'No settings to update. Skipped (set via env): {keys}':
     'No hay ajustes que actualizar. Omitidos (definidos por entorno): {keys}',
   'No settings to update': 'No hay ajustes que actualizar',
@@ -1533,7 +1530,7 @@ export const es: Catalog = {
     'Error de autenticación: el proveedor de identidad no ha devuelto claves de firma de tokens (JWKS vacío). Si usas Authentik, elige una Signing Key en los ajustes del proveedor y vuelve a intentarlo.',
   'Authentication failed': 'Error de autenticación',
   'Account not found. Contact your administrator.':
-    'No se ha encontrado la cuenta. Ponte en contacto con tu administrador.',
+    'No se encontró la cuenta. Ponte en contacto con tu administrador.',
   'OIDC token claim validation failed: {claim}':
     'Ha fallado la validación del claim del token OIDC: {claim}',
   'OIDC issuer validation failed. Verify your discovery URL and IdP issuer/external URL configuration.':
@@ -1596,10 +1593,10 @@ export const es: Catalog = {
   'Setting not user-overridable: {key}': 'El usuario no puede cambiar este ajuste: {key}',
   'Invalid policy mode for {key}: {value}': 'Modo de política no válido para {key}: {value}',
   'Invalid value for {key}: found {count} invalid URL(s). Use URL values with a valid scheme, e.g. discord://... or ntfys://...':
-    'Valor no válido para {key}: hay {count} URL no válidas. Usa URL con un esquema válido, p. ej. discord://... o ntfys://...',
+    'Valor no válido para {key}: URL no válidas: {count}. Usa URL con un esquema válido, p. ej. discord://... o ntfys://...',
   'Invalid value for {key}: must be a list': 'Valor no válido para {key}: debe ser una lista',
   "Invalid value for {key}: unsupported content type '{entry}'":
-    "Valor no válido para {key}: tipo de contenido no admitido '{entry}'",
+    "Valor no válido para {key}: tipo de contenido no soportado '{entry}'",
   'Downloads settings tab not found': 'No se encuentra la pestaña de ajustes Descargas',
   'Search mode settings tab not found': 'No se encuentra la pestaña de ajustes Modo de búsqueda',
   'Notifications settings tab not found': 'No se encuentra la pestaña de ajustes Notificaciones',
@@ -1614,8 +1611,7 @@ export const es: Catalog = {
   'Invalid payload': 'Datos no válidos',
   'items must be an array': 'items debe ser una lista',
   'items must contain objects': 'items debe contener objetos',
-  'One or more activity items were not found':
-    'No se han encontrado uno o más elementos de actividad',
+  'One or more activity items were not found': 'No se encontraron uno o más elementos de actividad',
   'limit must be a positive integer': 'limit debe ser un entero positivo',
   'offset must be a non-negative integer': 'offset debe ser un entero no negativo',
   'Download not found': 'Descarga no encontrada',
@@ -1668,7 +1664,7 @@ export const es: Catalog = {
   'source is required': 'source es obligatorio',
   'Unknown source: {source}': 'Fuente desconocida: {source}',
   "The release search ran out of time ({seconds}s). Anna's Archive is behind a protection challenge the bypasser could not solve in that window. Raise the release search timeout if your setup is simply slow.":
-    "La búsqueda de versiones se ha quedado sin tiempo ({seconds}s). Anna's Archive está detrás de un reto de protección que el bypass no ha podido resolver en ese plazo. Sube el tiempo límite de búsqueda de versiones si tu instalación simplemente es lenta.",
+    "La búsqueda de versiones se ha quedado sin tiempo ({seconds}s). Anna's Archive está detrás de una prueba de validación que el bypasser no ha podido resolver en ese plazo. Sube el tiempo límite de búsqueda de versiones si tu instalación simplemente es lenta.",
   'Local Path must be an absolute path (got: {local_path})':
     'La ruta local debe ser absoluta (se indicó: {local_path})',
   'Download not allowed by policy': 'La política no permite esta descarga',
@@ -1738,8 +1734,8 @@ export const es: Catalog = {
   "Provider '{provider_name}' is not available":
     "El proveedor '{provider_name}' no está disponible",
   'Book not found': 'Libro no encontrado',
-  'Failed to load book targets': 'No se pudieron cargar los destinos del libro',
-  'Failed to update book targets': 'No se pudieron actualizar los destinos del libro',
+  'Failed to load book targets': 'No se pudieron cargar las listas del libro',
+  'Failed to update book targets': 'No se pudieron actualizar las listas del libro',
   'book_ids must be a non-empty array': 'book_ids debe ser una lista no vacía',
   'target is required': 'target es obligatorio',
   'selected must be a boolean': 'selected debe ser un booleano',
@@ -1764,7 +1760,7 @@ export const es: Catalog = {
   'Failed to finalize completed download: {error}':
     'No se pudo finalizar la descarga completada: {error}',
   'No download clients configured. Configure qBittorrent or NZBGet in settings.':
-    'No hay clientes de descarga configurados. Configura qBittorrent o NZBGet en ajustes.',
+    'No hay clientes de descarga configurados. Configura qBittorrent o NZBGet en Ajustes.',
   'No {protocol} client configured': 'No hay ningún cliente de {protocol} configurado',
   'Found existing download, copying to library':
     'Se encontró una descarga existente, copiando a la biblioteca',
@@ -1929,16 +1925,15 @@ export const es: Catalog = {
     'TorBox está procesando el torrent ({name}: {remote_state})',
   'Downloading files via TorBox...': 'Descargando archivos mediante TorBox...',
   'TorBox ready, retrieving files...': 'TorBox listo, obteniendo archivos...',
-  'Bypassing protection...': 'Superando la protección...',
+  'Bypassing protection...': 'Saltando la protección...',
   'Connecting (Attempt {attempt}/{max_attempts})': 'Conectando (intento {attempt}/{max_attempts})',
   'Rate limited, try again shortly': 'Límite de peticiones alcanzado, inténtalo de nuevo en breve',
-  'Bypass failed: {error_type}: {error}':
-    'Falló la superación de la protección: {error_type}: {error}',
+  'Bypass failed: {error_type}: {error}': 'Falló el bypass: {error_type}: {error}',
   'Server busy, trying next': 'Servidor ocupado, probando el siguiente',
   'Server timed out, trying next': 'El servidor no respondió a tiempo, probando el siguiente',
   'Retrying now': 'Reintentando ahora',
   'Download stalled (no activity for {seconds}s)':
-    'Descarga detenida (sin actividad durante {seconds} s)',
+    'Descarga estancada (sin actividad durante {seconds} s)',
   'Download file missing: {temp_path}': 'Falta el archivo descargado: {temp_path}',
   'Preparing {name} upload': 'Preparando la subida a {name}',
   'Uploading to {name} ({index}/{total})': 'Subiendo a {name} ({index}/{total})',
@@ -1968,16 +1963,16 @@ export const es: Catalog = {
   'Extracting archives': 'Extrayendo archivos comprimidos',
   'Processing download folder': 'Procesando la carpeta de descarga',
   'Extracting archive': 'Extrayendo archivo comprimido',
-  'No supported file formats found': 'No se encontraron formatos de archivo admitidos',
+  'No supported file formats found': 'No se encontraron formatos de archivo soportados',
   'API request failed - check your API key': 'Falló la petición a la API: revisa tu clave de API',
   'Successfully connected to Google Books API': 'Conectado correctamente a la API de Google Books',
   "Access Google's comprehensive book database. Requires a free API key with ~1000 requests/day quota.":
     'Accede a la amplia base de datos de libros de Google. Requiere una clave de API gratuita con una cuota de unas 1000 peticiones al día.',
   'Enable Google Books': 'Activar Google Books',
   'Enable Google Books as a metadata provider for book searches':
-    'Activa Google Books como proveedor de metadatos para buscar libros',
+    'Activar Google Books como proveedor de metadatos para buscar libros',
   'Get your API key from Google Cloud Console (APIs & Services > Credentials)':
-    'Obtén tu clave de API en Google Cloud Console (APIs & Services > Credentials)',
+    'Obtén tu clave de API en Google Cloud Console (APIs y servicios > Credenciales)',
   'Verify your API key works': 'Comprueba que tu clave de API funciona',
   'Default sort order for Google Books search results.':
     'Orden predeterminado de los resultados de búsqueda de Google Books.',
@@ -1990,27 +1985,27 @@ export const es: Catalog = {
     'Una plataforma moderna para seguir y descubrir libros, con una API completa.',
   'Enable Hardcover': 'Activar Hardcover',
   'Enable Hardcover as a metadata provider for book searches':
-    'Activa Hardcover como proveedor de metadatos para buscar libros',
+    'Activar Hardcover como proveedor de metadatos para buscar libros',
   'Get your API key from hardcover.app/account/api (starts with hc_pat_)':
     'Obtén tu clave de API en hardcover.app/account/api (empieza por hc_pat_)',
   'Default sort order for Hardcover search results.':
     'Orden predeterminado de los resultados de búsqueda de Hardcover.',
   'Exclude Compilations': 'Excluir recopilaciones',
   'Filter out compilations, anthologies, and omnibus editions from search results':
-    'Quita de los resultados las recopilaciones, antologías y ediciones ómnibus',
+    'Quitar de los resultados las recopilaciones, antologías y ediciones ómnibus',
   'Exclude Unreleased Books': 'Excluir libros no publicados',
   'Filter out books with a release year in the future':
-    'Quita los libros con año de publicación en el futuro',
+    'Quitar los libros con año de publicación en el futuro',
   'Auto-Remove from List on Download': 'Quitar de la lista al descargar',
   'Automatically remove a book from the active Hardcover list when you download it':
-    'Quita automáticamente un libro de la lista activa de Hardcover cuando lo descargas',
+    'Quitar automáticamente un libro de la lista activa de Hardcover cuando lo descargas',
   'Unexpected response from moly.hu': 'Respuesta inesperada de moly.hu',
   'Successfully connected to moly.hu': 'Conectado correctamente a moly.hu',
   'Hungarian community book catalog with excellent coverage of Hungarian editions and translations. No API key required.':
     'Catálogo comunitario húngaro de libros, con muy buena cobertura de ediciones y traducciones húngaras. No requiere clave de API.',
   'Enable Moly.hu': 'Activar Moly.hu',
   'Enable Moly.hu as a metadata provider for book searches':
-    'Activa Moly.hu como proveedor de metadatos para buscar libros',
+    'Activar Moly.hu como proveedor de metadatos para buscar libros',
   'Verify moly.hu is accessible': 'Comprueba que moly.hu está accesible',
   'Unexpected response from API': 'Respuesta inesperada de la API',
   'Successfully connected to Open Library API': 'Conectado correctamente a la API de Open Library',
@@ -2019,7 +2014,7 @@ export const es: Catalog = {
     'Una iniciativa de Internet Archive. Un catálogo de biblioteca libre y de código abierto con millones de libros. No requiere clave de API.',
   'Enable Open Library': 'Activar Open Library',
   'Enable Open Library as a metadata provider for book searches':
-    'Activa Open Library como proveedor de metadatos para buscar libros',
+    'Activar Open Library como proveedor de metadatos para buscar libros',
   'Verify Open Library API is accessible': 'Comprueba que la API de Open Library está accesible',
   'Default sort order for Open Library search results.':
     'Orden predeterminado de los resultados de búsqueda de Open Library.',
@@ -2030,7 +2025,7 @@ export const es: Catalog = {
     'No se pudo extraer el enlace magnet de la página de detalles',
   'Enable AudiobookBay': 'Activar AudiobookBay',
   'Enable AudiobookBay as a release source for audiobooks.':
-    'Activa AudiobookBay como fuente de versiones de audiolibros.',
+    'Activar AudiobookBay como fuente de versiones de audiolibros.',
   Hostname: 'Nombre de host',
   'AudiobookBay domain (e.g., audiobookbay.lu, audiobookbay.is). Required to enable searches.':
     'Dominio de AudiobookBay (p. ej., audiobookbay.lu, audiobookbay.is). Necesario para activar las búsquedas.',
@@ -2039,7 +2034,7 @@ export const es: Catalog = {
     'Número máximo de páginas de resultados que se obtienen (1-10).',
   'Prefer Exact-Phrase Search': 'Preferir búsqueda por frase exacta',
   'Wrap generated queries in quotes for stricter matching. If no results are found, Shelfmark retries without quotes.':
-    'Pone entre comillas las consultas generadas para una coincidencia más estricta. Si no hay resultados, Shelfmark vuelve a intentarlo sin comillas.',
+    'Poner entre comillas las consultas generadas para una coincidencia más estricta. Si no hay resultados, Shelfmark vuelve a intentarlo sin comillas.',
   'Rate Limit Delay (seconds)': 'Espera entre peticiones (segundos)',
   'Delay between requests in seconds to avoid rate limiting (0-10).':
     'Espera entre peticiones, en segundos, para evitar el límite de peticiones (0-10).',
@@ -2050,7 +2045,7 @@ export const es: Catalog = {
   'Fetching download sources': 'Obteniendo fuentes de descarga',
   'Finding download source': 'Buscando fuente de descarga',
   "All sources failed - your network/ISP appears to be blocking Anna's Archive. Enable DNS-over-HTTPS in settings.":
-    "Fallaron todas las fuentes: parece que tu red o tu proveedor de internet bloquea Anna's Archive. Activa DNS-over-HTTPS en ajustes.",
+    "Fallaron todas las fuentes: parece que tu red o tu proveedor de internet bloquea Anna's Archive. Activa DNS sobre HTTPS en Ajustes.",
   'All download sources failed': 'Fallaron todas las fuentes de descarga',
   'IRC not configured': 'IRC no está configurado',
   'Connecting to {server}': 'Conectando a {server}',
@@ -2070,7 +2065,7 @@ export const es: Catalog = {
     'Puerto del servidor IRC (normalmente 6697 para TLS, 6667 sin cifrar)',
   'Use TLS': 'Usar TLS',
   "Enable TLS/SSL encryption for the IRC connection. Disable for servers that don't support TLS.":
-    'Activa el cifrado TLS/SSL para la conexión IRC. Desactívalo para servidores que no admiten TLS.',
+    'Activar el cifrado TLS/SSL para la conexión IRC. Desactívalo para servidores que no soportan TLS.',
   Channel: 'Canal',
   'e.g. ebooks': 'p. ej. ebooks',
   'Channel name without the # prefix. Used for all searches unless a separate audiobook channel is configured below.':
@@ -2084,7 +2079,7 @@ export const es: Catalog = {
   'The search bot to address queries to (required). Searches are sent as "@<bot> <query>".':
     'El bot al que se envían las consultas (obligatorio). Las búsquedas se envían como "@<bot> <query>".',
   "Most networks index audiobooks in the same channel as ebooks, so leaving these blank is the right setting for almost everyone. On irc.irchighway.net the audiobooks are in #ebooks and #bookz is effectively inactive — pointing this at an empty channel just returns no results. Only fill these in when your network really does index audiobooks elsewhere (Undernet's #bookz, for example). Audiobooks are usually posted as archives, so keep ZIP and RAR enabled under Supported Audiobook Formats or the releases are filtered out.":
-    'La mayoría de las redes indexan los audiolibros en el mismo canal que los libros electrónicos, así que dejar esto en blanco es lo correcto para casi todo el mundo. En irc.irchighway.net los audiolibros están en #ebooks y #bookz está prácticamente inactivo: apuntar aquí a un canal vacío solo devuelve cero resultados. Rellénalo solo si tu red de verdad indexa los audiolibros en otro sitio (por ejemplo, #bookz de Undernet). Los audiolibros suelen publicarse como archivos comprimidos, así que mantén ZIP y RAR activados en Formatos de audiolibro admitidos o se filtrarán las versiones.',
+    'La mayoría de las redes indexan los audiolibros en el mismo canal que los libros electrónicos, así que dejar esto en blanco es lo correcto para casi todo el mundo. En irc.irchighway.net los audiolibros están en #ebooks y #bookz está prácticamente inactivo: apuntar aquí a un canal vacío solo devuelve cero resultados. Rellénalo solo si tu red de verdad indexa los audiolibros en otro sitio (por ejemplo, #bookz de Undernet). Los audiolibros suelen publicarse como archivos comprimidos, así que mantén ZIP y RAR activados en Formatos de audiolibro soportados o se filtrarán las versiones.',
   'Audiobook channel': 'Canal de audiolibros',
   'e.g. bookz': 'p. ej. bookz',
   "Optional. Channel name (without the # prefix) for networks that index audiobooks separately, such as Undernet's bookz. Leave blank (the usual setting) to search the main channel above for audiobooks too.":
@@ -2100,7 +2095,7 @@ export const es: Catalog = {
     'Cuánto tiempo se guardan los resultados de búsqueda en caché antes de caducar.',
   'Clear Cache': 'Borrar caché',
   'Remove all cached IRC search results.':
-    'Elimina todos los resultados de búsqueda de IRC guardados en caché.',
+    'Eliminar todos los resultados de búsqueda de IRC guardados en caché.',
   '30 days': '30 días',
   'Forever (until manually cleared)': 'Para siempre (hasta borrarla a mano)',
   'IRC search bot not configured': 'No hay bot de búsqueda de IRC configurado',
@@ -2134,7 +2129,7 @@ export const es: Catalog = {
     'Busca libros en cualquier indexador o agregador compatible con Newznab (p. ej. NZBHydra2, NZBGeek, Drunkenslug).',
   'Enable Newznab source': 'Activar la fuente Newznab',
   'Enable searching for books via a Newznab-compatible indexer':
-    'Activa la búsqueda de libros mediante un indexador compatible con Newznab',
+    'Activar la búsqueda de libros mediante un indexador compatible con Newznab',
   'Named Indexers': 'Indexadores con nombre',
   'Add each Newznab-compatible indexer separately. The configured name is shown beside every result from that indexer.':
     'Añade cada indexador compatible con Newznab por separado. El nombre configurado se muestra junto a cada resultado de ese indexador.',
@@ -2157,12 +2152,12 @@ export const es: Catalog = {
     'ID de categoría de Newznab que se buscan para audiolibros. La mayoría de los indexadores usan el estándar 3030, pero algunos usan ID propios. Déjalo vacío para usar 3030.',
   'Auto-expand search on no results': 'Ampliar la búsqueda si no hay resultados',
   'Automatically retry search without category filtering if no results are found':
-    'Repite la búsqueda automáticamente sin filtrar por categoría si no se encuentran resultados',
+    'Repetir la búsqueda automáticamente sin filtrar por categoría si no se encuentran resultados',
   Name: 'Nombre',
   URL: 'URL',
   Optional: 'Opcional',
   Indexer: 'Indexador',
-  Flags: 'Marcas',
+  Flags: 'Indicadores',
   'Connected to MyAnonamouse as {username}': 'Conectado a MyAnonamouse como {username}',
   'Prowlarr URL is required': 'La URL de Prowlarr es obligatoria',
   'Prowlarr URL is invalid': 'La URL de Prowlarr no es válida',
@@ -2174,7 +2169,7 @@ export const es: Catalog = {
     'Busca libros en tus indexadores mediante Prowlarr.',
   'Enable Prowlarr source': 'Activar la fuente Prowlarr',
   'Enable searching for books via Prowlarr indexers':
-    'Activa la búsqueda de libros mediante los indexadores de Prowlarr',
+    'Activar la búsqueda de libros mediante los indexadores de Prowlarr',
   'Prowlarr URL': 'URL de Prowlarr',
   'Base URL of your Prowlarr instance': 'URL base de tu instancia de Prowlarr',
   'Found in Prowlarr: Settings > General > API Key':
@@ -2185,16 +2180,16 @@ export const es: Catalog = {
     'Elige en qué indexadores buscar. 📚 = tiene categorías de libros. Déjalo vacío para buscar en todos.',
   'Indexer Search Timeout (seconds)': 'Tiempo de espera por indexador (segundos)',
   'How long to wait for a single indexer to answer a search. Indexers behind FlareSolverr can need 90 seconds or more while a cold Cloudflare challenge is solved; raise this if searches come back empty and the Prowlarr log shows the search still running.':
-    'Cuánto se espera a que un indexador responda una búsqueda. Los indexadores detrás de FlareSolverr pueden necesitar 90 segundos o más mientras se resuelve un desafío de Cloudflare en frío; súbelo si las búsquedas vuelven vacías y el registro de Prowlarr muestra que la búsqueda sigue en curso.',
+    'Cuánto se espera a que un indexador responda una búsqueda. Los indexadores detrás de FlareSolverr pueden necesitar 90 segundos o más mientras se resuelve una prueba de validación de Cloudflare en frío; súbelo si las búsquedas vuelven vacías y el registro de Prowlarr muestra que la búsqueda sigue en curso.',
   'Show one row per release': 'Mostrar una fila por versión',
   'Collapse a release that several indexer entries returned down to a single row, keeping the entry with the best Prowlarr priority. Turn this off to see every entry that carried it, which is what makes results from filter-specific entries (freeleech and the like) visible.':
-    'Agrupa en una sola fila una versión que devolvieron varias entradas de indexador, y conserva la entrada con mejor prioridad en Prowlarr. Desactívalo para ver cada entrada que la incluía, que es lo que hace visibles los resultados de entradas con filtros específicos (freeleech y similares).',
+    'Agrupar en una sola fila una versión que devolvieron varias entradas de indexador, conservando la entrada con mejor prioridad en Prowlarr. Desactívalo para ver cada entrada que la incluía, que es lo que hace visibles los resultados de entradas con filtros específicos (freeleech y similares).',
   'Use Prowlarr seed preferences': 'Usar las preferencias de siembra de Prowlarr',
   'Apply per-indexer seed time and ratio preferences from Prowlarr when sending torrents to the download client':
-    'Aplica las preferencias de tiempo y ratio de siembra de cada indexador de Prowlarr al enviar torrents al cliente de descarga',
+    'Aplicar las preferencias de tiempo y ratio de siembra de cada indexador de Prowlarr al enviar torrents al cliente de descarga',
   'MyAnonamouse Enrichment': 'Enriquecimiento con MyAnonamouse',
   "Prowlarr drops the narrator and series from MyAnonamouse results. With a MAM session ID, Shelfmark looks them up (plus bitrate, from the uploader's tags) directly from MyAnonamouse. Create the session under Preferences > Security on MyAnonamouse, locked to the IP or ASN Shelfmark connects from. Choose which columns show under Search Mode > Release List Columns.":
-    'Prowlarr descarta el narrador y la serie de los resultados de MyAnonamouse. Con un ID de sesión de MAM, Shelfmark los consulta (y también la tasa de bits, a partir de las etiquetas del uploader) directamente en MyAnonamouse. Crea la sesión en Preferences > Security de MyAnonamouse, vinculada a la IP o ASN desde la que se conecta Shelfmark. Elige qué columnas se muestran en Modo de búsqueda > Columnas de la lista de versiones.',
+    'Prowlarr descarta el narrador y la serie de los resultados de MyAnonamouse. Con un ID de sesión de MAM, Shelfmark los consulta (y también la tasa de bits, a partir de las etiquetas del publicador) directamente en MyAnonamouse. Crea la sesión en Preferences > Security de MyAnonamouse, vinculada a la IP o ASN desde la que se conecta Shelfmark. Elige qué columnas se muestran en Modo de búsqueda > Columnas de la lista de versiones.',
   'MAM security settings': 'Ajustes de seguridad de MAM',
   'MAM Session ID': 'ID de sesión de MAM',
   "The mam_id value MyAnonamouse shows when you create a session. MAM locks each session to one IP or ASN, so reusing Prowlarr's or another client's session often fails with a 403: you will likely need a separate session for Shelfmark if it reaches MAM from another IP (different host, VPN or proxy) or the existing session is ASN-locked to another network. Leave empty to turn enrichment off.":
@@ -2223,11 +2218,11 @@ export const es: Catalog = {
   'Connected to TorBox ({plan} plan)': 'Conectado a TorBox (plan {plan})',
   "Connected to TorBox as '{email}' ({plan} plan)":
     "Conectado a TorBox como '{email}' (plan {plan})",
-  Stalled: 'Detenido',
+  Stalled: 'Estancado',
   'Fetching metadata': 'Obteniendo metadatos',
   'Allocating space': 'Reservando espacio',
   Seeding: 'Sembrando',
-  'Seeding (stalled)': 'Sembrando (detenido)',
+  'Seeding (stalled)': 'Sembrando (estancado)',
   Paused: 'En pausa',
   'Checking files': 'Comprobando archivos',
   'Checking resume data': 'Comprobando datos de reanudación',
@@ -2237,14 +2232,14 @@ export const es: Catalog = {
   'Waiting to check': 'Esperando para comprobar',
   'Waiting to download': 'Esperando para descargar',
   Idle: 'Inactivo',
-  Propagating: 'Propagando',
+  Propagating: 'Esperando propagación',
   Fetching: 'Obteniendo',
-  Grabbing: 'Capturando',
+  Grabbing: 'Obteniendo el NZB',
   Verifying: 'Verificando',
   Repairing: 'Reparando',
   Extracting: 'Extrayendo',
   Moving: 'Moviendo',
-  Running: 'Ejecutando',
+  Running: 'En ejecución',
   'Post Processing': 'Posprocesando',
   Unpacking: 'Desempaquetando',
   'Torrent not found': 'Torrent no encontrado',
@@ -2262,7 +2257,7 @@ export const es: Catalog = {
   'Real-Debrid status error: {status}': 'Error de estado de Real-Debrid: {status}',
   'No download links returned by Real-Debrid': 'Real-Debrid no devolvió enlaces de descarga',
   'Failed to unrestrict Real-Debrid link: {link}':
-    'No se pudo desrestringir el enlace de Real-Debrid: {link}',
+    'No se pudo desbloquear el enlace de Real-Debrid: {link}',
   'TorBox download failed': 'Falló la descarga de TorBox',
   'TorBox status check failed: {error}': 'Falló la comprobación de estado de TorBox: {error}',
   'TorBox status error: {state}': 'Error de estado de TorBox: {state}',
@@ -2272,7 +2267,7 @@ export const es: Catalog = {
     'TorBox no devolvió la lista de archivos de un torrent completado',
   'TorBox file retrieval failed': 'Falló la obtención de archivos de TorBox',
   'TorBox torrent contains no supported book or audiobook files':
-    'El torrent de TorBox no contiene archivos de libro ni de audiolibro admitidos',
+    'El torrent de TorBox no contiene archivos de libro ni de audiolibro soportados',
   '{progress} - {seconds}s left': '{progress} - quedan {seconds} s',
   '{progress} - {minutes}m left': '{progress} - quedan {minutes} min',
   '{progress} - {hours}h {minutes}m left': '{progress} - quedan {hours} h {minutes} min',
@@ -2285,13 +2280,13 @@ export const es: Catalog = {
   "Path '{path}' contains backslashes. This may indicate a Windows path or incorrect path escaping. Linux paths should use forward slashes (/).":
     "La ruta '{path}' contiene barras invertidas. Puede ser una ruta de Windows o un escape de ruta incorrecto. Las rutas de Linux deben usar barras normales (/).",
   "Path '{path}' is not accessible from Shelfmark's container. Ensure both containers have matching volume mounts for this directory, or configure Remote Path Mappings in Settings > Advanced.":
-    "La ruta '{path}' no es accesible desde el contenedor de Shelfmark. Asegúrate de que ambos contenedores montan este directorio en la misma ruta, o configura las asignaciones de rutas remotas en Ajustes > Avanzado.",
+    "La ruta '{path}' no es accesible desde el contenedor de Shelfmark. Asegúrate de que ambos contenedores montan este directorio en la misma ruta, o configura las asociaciones de rutas remotas en Ajustes > Avanzado.",
   "Remote path mapping rejected unsafe path '{path}'. Check Settings > Advanced > Remote Path Mappings.":
-    "La asignación de rutas remotas rechazó la ruta insegura '{path}'. Revisa Ajustes > Avanzado > Asignaciones de rutas remotas.",
+    "La asociación de rutas remotas rechazó la ruta insegura '{path}'. Revisa Ajustes > Avanzado > Asociaciones de rutas remotas.",
   "Remapped path '{path}' does not exist. Check your Docker volume mounts match the Local Path in Settings > Advanced > Remote Path Mappings.":
-    "La ruta reasignada '{path}' no existe. Comprueba que tus volúmenes de Docker coinciden con la ruta local de Ajustes > Avanzado > Asignaciones de rutas remotas.",
+    "La ruta reasignada '{path}' no existe. Comprueba que tus volúmenes de Docker coinciden con la ruta local de Ajustes > Avanzado > Asociaciones de rutas remotas.",
   "{hint} No remote path mapping matched for client '{name}'.":
-    "{hint} Ninguna asignación de rutas remotas coincide con el cliente '{name}'.",
+    "{hint} Ninguna asociación de rutas remotas coincide con el cliente '{name}'.",
   'Configured email recipient is invalid': 'El destinatario de correo configurado no es válido',
   '{display_name} is unavailable. Enable and configure the source in Settings.':
     '{display_name} no está disponible. Activa y configura la fuente en Ajustes.',
@@ -2312,27 +2307,27 @@ export const es: Catalog = {
   "Could not reach Anna's Archive — all mirrors were exhausted without a usable response.":
     "No se pudo llegar a Anna's Archive: se agotaron todos los espejos sin una respuesta útil.",
   'The protection bypasser returned an empty page — the challenge was not solved. Check that FlareSolverr/the CF bypasser is reachable.':
-    'El sistema para superar la protección devolvió una página vacía: el desafío no se resolvió. Comprueba que FlareSolverr o el bypasser de CF está accesible.',
+    'El bypasser devolvió una página vacía: la prueba de validación no se resolvió. Comprueba que FlareSolverr o el bypasser de CF está accesible.',
   'The request was cancelled.': 'La petición se canceló.',
   'The protection bypasser failed: {error_type}: {error}':
-    'Falló el sistema para superar la protección: {error_type}: {error}',
-  'The protection bypass was cancelled.': 'Se canceló la superación de la protección.',
+    'Falló el bypasser: {error_type}: {error}',
+  'The protection bypass was cancelled.': 'Se canceló el bypass de la protección.',
   "Anna's Archive returned 403 (blocked) and no bypasser is enabled to solve the protection challenge.":
-    "Anna's Archive devolvió 403 (bloqueado) y no hay ningún bypasser activado para resolver el desafío de protección.",
+    "Anna's Archive devolvió 403 (bloqueado) y no hay ningún bypasser activado para resolver la prueba de validación.",
   "Anna's Archive returned 404 Not Found for {url}.":
     "Anna's Archive devolvió 404 Not Found para {url}.",
   "Every Anna's Archive mirror redirected away to a dead host — all configured mirrors are unreachable.":
     "Todos los espejos de Anna's Archive redirigieron a un host caído: no se puede llegar a ninguno de los espejos configurados.",
   "Anna's Archive is behind a protection challenge (endless redirect loop) and no bypasser is enabled to solve it. Enable FlareSolverr/the CF bypasser.":
-    "Anna's Archive está detrás de un desafío de protección (bucle infinito de redirecciones) y no hay ningún bypasser activado para resolverlo. Activa FlareSolverr o el bypasser de CF.",
+    "Anna's Archive está detrás de una prueba de validación (bucle infinito de redirecciones) y no hay ningún bypasser activado para resolverlo. Activa FlareSolverr o el bypasser de CF.",
   "Anna's Archive returned 403 (blocked) and all mirrors are exhausted.":
     "Anna's Archive devolvió 403 (bloqueado) y se agotaron todos los espejos.",
   'The configured mirror {host} redirected to {redirect_host}; it may be down or seized. Point MIRROR at a working host or switch to auto mode.':
     'El espejo configurado {host} redirigió a {redirect_host}; puede estar caído o intervenido. Apunta MIRROR a un host que funcione o cambia al modo automático.',
   'The bypasser ran, but the site kept answering with a protection challenge (marker={marker}). That is usually a manual CAPTCHA, which no bypasser can answer - the bypasser itself is working. Try again shortly.':
-    'El bypasser se ejecutó, pero el sitio siguió respondiendo con un desafío de protección (marker={marker}). Suele ser un CAPTCHA manual, que ningún bypasser puede resolver; el bypasser funciona. Inténtalo de nuevo en breve.',
+    'El bypasser se ejecutó, pero el sitio siguió respondiendo con una prueba de validación (marker={marker}). Suele ser un CAPTCHA manual, que ningún bypasser puede resolver; el bypasser funciona. Inténtalo de nuevo en breve.',
   '{hostname} is rate-limited (429); skipping bypass for ~{seconds}s until the cooldown clears.':
-    '{hostname} tiene limitadas las peticiones (429); se omite la superación de la protección durante unos {seconds} s hasta que pase la espera.',
+    '{hostname} tiene limitadas las peticiones (429); se omite el bypass durante unos {seconds} s hasta que pase la espera.',
   "Anna's Archive waiting room did not finish within {seconds}s":
     "La sala de espera de Anna's Archive no terminó en {seconds} s",
   'Moving file': 'Moviendo el archivo',
@@ -2350,16 +2345,16 @@ export const es: Catalog = {
   'No audiobook files found in archive':
     'No se encontraron archivos de audiolibro en el archivo comprimido',
   'Found {count} book(s) but format not supported ({formats}). Enable in Settings > Formats.':
-    'Se encontraron {count} libro(s) pero el formato no está admitido ({formats}). Actívalo en Ajustes > Formatos.',
+    'Se encontraron {count} libro(s) pero el formato no está soportado ({formats}). Actívalo en Ajustes > Formatos.',
   'Found {count} audiobook(s) but format not supported ({formats}). Enable in Settings > Formats.':
-    'Se encontraron {count} audiolibro(s) pero el formato no está admitido ({formats}). Actívalo en Ajustes > Formatos.',
-  'Unsupported book file type: {type}': 'Tipo de archivo de libro no admitido: {type}',
-  'Unsupported audiobook file type: {type}': 'Tipo de archivo de audiolibro no admitido: {type}',
+    'Se encontraron {count} audiolibro(s) pero el formato no está soportado ({formats}). Actívalo en Ajustes > Formatos.',
+  'Unsupported book file type: {type}': 'Tipo de archivo de libro no soportado: {type}',
+  'Unsupported audiobook file type: {type}': 'Tipo de archivo de audiolibro no soportado: {type}',
   'Permission denied accessing download folder: {directory}':
     'Permiso denegado al acceder a la carpeta de descarga: {directory}',
   'Cannot access download folder: {directory} ({error})':
     'No se puede acceder a la carpeta de descarga: {directory} ({error})',
-  'Unsupported archive format: {suffix}': 'Formato de archivo comprimido no admitido: {suffix}',
+  'Unsupported archive format: {suffix}': 'Formato de archivo comprimido no soportado: {suffix}',
   'RAR extraction not available - rarfile library not installed':
     'La extracción de RAR no está disponible: la biblioteca rarfile no está instalada',
   'unrar binary not found - install unrar package':
@@ -2382,7 +2377,7 @@ export const es: Catalog = {
   'Uploaded to {name}': 'Subido a {name}',
   'Uploaded to {name} ({count} files)': 'Subido a {name} ({count} archivos)',
   '{name} does not support {formats}. Supported formats: {supported}':
-    '{name} no admite {formats}. Formatos admitidos: {supported}',
+    '{name} no soporta {formats}. Formatos soportados: {supported}',
   '{name} URL is required': 'La URL de {name} es obligatoria',
   '{name} username is required': 'El usuario de {name} es obligatorio',
   '{name} password is required': 'La contraseña de {name} es obligatoria',
@@ -2408,18 +2403,18 @@ export const es: Catalog = {
   'Could not connect to SMTP server: {error}': 'No se pudo conectar con el servidor SMTP: {error}',
   'Failed to send email: {error}': 'No se pudo enviar el correo: {error}',
   'Direct Download is disabled. Enable the source in Settings and add your mirror URLs.':
-    'La descarga directa está desactivada. Activa la fuente en Ajustes y añade las URL de tus espejos.',
+    'La fuente Descarga directa está desactivada. Activa la fuente en Ajustes y añade las URL de tus espejos.',
   "Direct Download is not configured. Add at least one Anna's Archive mirror URL in Settings.":
-    "La descarga directa no está configurada. Añade al menos una URL de espejo de Anna's Archive en Ajustes.",
+    "La fuente Descarga directa no está configurada. Añade al menos una URL de espejo de Anna's Archive en Ajustes.",
   'Direct Download is disabled. Enable the source in Settings.':
-    'La descarga directa está desactivada. Activa la fuente en Ajustes.',
+    'La fuente Descarga directa está desactivada. Activa la fuente en Ajustes.',
   'Direct Download is not configured. Enable and configure at least one download provider in Settings.':
-    'La descarga directa no está configurada. Activa y configura al menos un proveedor de descarga en Ajustes.',
+    'La fuente Descarga directa no está configurada. Activa y configura al menos un proveedor de descarga en Ajustes.',
   'Unable to reach download source. {detail}':
     'No se pudo llegar a la fuente de descarga. {detail}',
   'Network restricted or mirrors are blocked.': 'Red restringida o espejos bloqueados.',
   "Anna's Archive answered with a protection challenge that was not cleared (marker={marker}). If the bypasser reports solving it, the host is serving a manual CAPTCHA that no bypasser can answer - try again shortly. Otherwise check that the bypasser is reachable and working.":
-    "Anna's Archive respondió con un desafío de protección que no se superó (marker={marker}). Si el bypasser dice haberlo resuelto, el host está sirviendo un CAPTCHA manual que ningún bypasser puede resolver: inténtalo de nuevo en breve. Si no, comprueba que el bypasser está accesible y funciona.",
+    "Anna's Archive respondió con una prueba de validación que no se superó (marker={marker}). Si el bypasser dice haberlo resuelto, el host está sirviendo un CAPTCHA manual que ningún bypasser puede resolver: inténtalo de nuevo en breve. Si no, comprueba que el bypasser está accesible y funciona.",
   'No books found. Please try another query.':
     'No se encontraron libros. Prueba con otra búsqueda.',
   'Waiting {seconds}s': 'Esperando {seconds} s',
@@ -2432,7 +2427,7 @@ export const es: Catalog = {
   'Connected to all {count} indexers': 'Conectado a los {count} indexadores',
   'One or more Newznab indexers failed': 'Fallaron uno o más indexadores de Newznab',
   'Newznab search timed out after {seconds}s':
-    'La búsqueda en Newznab superó el tiempo de espera tras {seconds} s',
+    'Se agotó el tiempo de espera de la búsqueda en Newznab ({seconds} s)',
   'Could not connect to Prowlarr. Check the URL.':
     'No se pudo conectar con Prowlarr. Revisa la URL.',
   'Connected to Prowlarr {version}': 'Conectado a Prowlarr {version}',
@@ -2441,7 +2436,7 @@ export const es: Catalog = {
   'Could not determine torrent hash from URL':
     'No se pudo determinar el hash del torrent a partir de la URL',
   'Prowlarr search timed out after {seconds}s':
-    'La búsqueda en Prowlarr superó el tiempo de espera tras {seconds} s',
+    'Se agotó el tiempo de espera de la búsqueda en Prowlarr ({seconds} s)',
   'could not reach Prowlarr: {error}': 'no se pudo llegar a Prowlarr: {error}',
   '{failed} of {attempted} indexer searches failed ({error})':
     'Fallaron {failed} de {attempted} búsquedas en indexadores ({error})',
@@ -2452,10 +2447,10 @@ export const es: Catalog = {
   'MyAnonamouse rejected the session ID (403). Sessions only work from the IP/ASN they are locked to, so check Shelfmark reaches MAM from that address. MAM said: {reply}':
     'MyAnonamouse rechazó el ID de sesión (403). Las sesiones solo funcionan desde la IP/ASN a la que están vinculadas, así que comprueba que Shelfmark llega a MAM desde esa dirección. MAM respondió: {reply}',
   'MyAnonamouse answered HTTP {status}': 'MyAnonamouse respondió HTTP {status}',
-  '{display_name} does not support book targets': '{display_name} no admite destinos de libro',
+  '{display_name} does not support book targets': '{display_name} no soporta listas de libros',
   'Want to Read ({count})': 'Quiero leer ({count})',
   'Currently Reading ({count})': 'Leyendo ({count})',
-  'Read ({count})': 'Leído ({count})',
+  'Read ({count})': 'Leídos ({count})',
   'Did Not Finish ({count})': 'No terminado ({count})',
   'by {author}': 'de {author}',
   'by {author} • 1 book': 'de {author} • 1 libro',
@@ -2464,14 +2459,15 @@ export const es: Catalog = {
   'book_id must be a valid Hardcover book id':
     'book_id debe ser un ID de libro de Hardcover válido',
   'Hardcover is not configured': 'Hardcover no está configurado',
-  'Unsupported Hardcover target': 'Destino de Hardcover no admitido',
-  'Hardcover could not load book targets': 'Hardcover no pudo cargar los destinos del libro',
-  'Hardcover returned an invalid target payload': 'Hardcover devolvió datos de destino no válidos',
-  'Invalid Hardcover target': 'Destino de Hardcover no válido',
-  'Invalid Hardcover status target': 'Destino de estado de Hardcover no válido',
-  'Invalid Hardcover list target': 'Destino de lista de Hardcover no válido',
+  'Unsupported Hardcover target': 'Lista de Hardcover no soportada',
+  'Hardcover could not load book targets': 'Hardcover no pudo cargar las listas del libro',
+  'Hardcover returned an invalid target payload': 'Hardcover devolvió datos de listas no válidos',
+  'Invalid Hardcover target': 'Lista de Hardcover no válida',
+  'Invalid Hardcover status target': 'Estado de Hardcover no válido',
+  'Invalid Hardcover list target': 'Lista de Hardcover no válida',
   'Hardcover rejected this request': 'Hardcover rechazó esta petición',
-  'Hardcover API request timed out': 'La petición a la API de Hardcover superó el tiempo de espera',
+  'Hardcover API request timed out':
+    'Se agotó el tiempo de espera de la petición a la API de Hardcover',
   'Hardcover API key is invalid': 'La clave de API de Hardcover no es válida',
   'Hardcover API HTTP error: {error}': 'Error HTTP de la API de Hardcover: {error}',
   'Hardcover API returned an invalid response':
