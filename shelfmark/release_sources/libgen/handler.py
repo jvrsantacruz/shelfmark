@@ -32,7 +32,7 @@ _MIN_VALID_FILE_SIZE = 10 * 1024
 # ads.php sits behind an anti-bot check that intermittently returns a tiny stub with no
 # download link, especially from datacentre IPs (a VPN exit). The stub is transient, so
 # retry the same mirror a few times before giving up on it.
-_ADS_RESOLVE_ATTEMPTS = 4
+_ADS_RESOLVE_ATTEMPTS = 3
 _ADS_RETRY_WAIT_SECONDS = 2
 
 
