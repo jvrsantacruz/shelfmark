@@ -6,6 +6,7 @@ only knows the libgen ``ads.php?md5= -> get.php`` path, keyed on the md5 the sea
 put in ``source_id``.
 """
 
+import time
 from typing import TYPE_CHECKING
 
 from shelfmark.config.env import TMP_DIR
@@ -27,6 +28,12 @@ logger = setup_logger(__name__)
 # Files under this size are almost certainly an error/challenge page, not a book. Same
 # threshold direct_download uses; duplicated to keep the package self-contained.
 _MIN_VALID_FILE_SIZE = 10 * 1024
+
+# ads.php sits behind an anti-bot check that intermittently returns a tiny stub with no
+# download link, especially from datacentre IPs (a VPN exit). The stub is transient, so
+# retry the same mirror a few times before giving up on it.
+_ADS_RESOLVE_ATTEMPTS = 4
+_ADS_RETRY_WAIT_SECONDS = 2
 
 
 @register_handler("libgen")
@@ -69,10 +76,20 @@ class LibgenHandler(DownloadHandler):
 
                 ads_url = f"{base.rstrip('/')}/ads.php?md5={md5}"
                 status_callback("resolving", "Resolving Libgen")
-                ads_html = scraper.fetch_page(ads_url, (5, 10))
-                if not ads_html:
-                    continue
-                get_url = scraper.resolve_download_url(ads_html, base)
+                # Retry the stub: a 200 with no resolvable link is the anti-bot page, and it
+                # clears on a later try often enough to be worth a few attempts per mirror.
+                get_url = None
+                for attempt in range(_ADS_RESOLVE_ATTEMPTS):
+                    if cancel_flag.is_set():
+                        status_callback("cancelled", "Cancelled")
+                        return None
+                    ads_html = scraper.fetch_page(ads_url, (5, 10))
+                    if ads_html:
+                        get_url = scraper.resolve_download_url(ads_html, base)
+                        if get_url:
+                            break
+                    if attempt + 1 < _ADS_RESOLVE_ATTEMPTS:
+                        time.sleep(_ADS_RETRY_WAIT_SECONDS)
                 if not get_url:
                     continue
 

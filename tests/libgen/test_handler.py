@@ -104,6 +104,27 @@ def test_download_all_mirrors_fail_returns_none(tmp_path):
     status.assert_any_call("error", "All Libgen mirrors failed")
 
 
+def test_download_retries_stub_then_resolves(tmp_path):
+    # ads.php intermittently returns an anti-bot stub with no link; the handler should retry
+    # the same mirror and succeed when a later try returns the real page.
+    calls = {"n": 0}
+
+    def fetch_page(url, timeout=(5, 10)):
+        calls["n"] += 1
+        return "<html>stub, no link</html>" if calls["n"] == 1 else html.ADS_HTML
+
+    with patch.object(libgen_handler.time, "sleep"):
+        result, _ = _run(
+            _task(f"libgen:{html.MD5_A}"),
+            tmp_path,
+            mirrors_list=["https://libgen.li"],
+            fetch_page=fetch_page,
+            download_url=lambda *a, **k: _buf(),
+        )
+    assert result == str(tmp_path / f"{html.MD5_A}.cbr")
+    assert calls["n"] == 2  # retried the stub once, then resolved
+
+
 def test_download_too_small_file_is_rejected(tmp_path):
     result, status = _run(
         _task(f"libgen:{html.MD5_A}"),
