@@ -986,7 +986,9 @@ class ExternalClientHandler(DownloadHandler, ABC):
         """
         poll_interval = self._poll_interval()
         queued_since: float | None = None
-        grace_requested_at = 0.0
+        # -inf, not 0: time.monotonic() counts from boot, so on a host up for less than
+        # QUEUE_GRACE_RENEW_SECONDS the first queue grace would never be asked for.
+        grace_requested_at = float("-inf")
         last_progress = 0.0
         start_window_given = False
         # Track consecutive "not found" errors - torrents may take time to appear in client
@@ -1087,7 +1089,7 @@ class ExternalClientHandler(DownloadHandler, ABC):
                 elif queued_since is not None:
                     release_activity_grace(status_callback)
                     queued_since = None
-                    grace_requested_at = 0.0
+                    grace_requested_at = float("-inf")
 
                 if status.progress > last_progress:
                     request_activity_grace(status_callback, MOVING_STALL_SECONDS)
