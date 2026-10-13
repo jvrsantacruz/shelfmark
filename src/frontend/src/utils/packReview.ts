@@ -25,21 +25,19 @@ export function toBookPlanPayload(books: PackBook[]): PackBook[] {
     .filter((book) => book.title.length > 0 && book.files.length > 0);
 }
 
-const booksText = (count: number): string =>
-  count === 1 ? t('1 book') : t('{count} books', { count });
-
-const filesText = (count: number): string =>
-  count === 1 ? t('1 file') : t('{count} files', { count });
-
-const ignoredText = (count: number): string =>
-  count === 1 ? t('1 file ignored') : t('{count} files ignored', { count });
-
 /** "2 books · 3 files · 2 files ignored" */
 export function describePackPlan(books: PackBook[], ignored: string[]): string {
   const fileCount = books.reduce((sum, book) => sum + book.files.length, 0);
-  const parts = [booksText(books.length), filesText(fileCount)];
+  const parts = [
+    books.length === 1 ? t('1 book') : t('{count} books', { count: books.length }),
+    fileCount === 1 ? t('1 file') : t('{count} files', { count: fileCount }),
+  ];
   if (ignored.length > 0) {
-    parts.push(ignoredText(ignored.length));
+    parts.push(
+      ignored.length === 1
+        ? t('1 file ignored')
+        : t('{count} files ignored', { count: ignored.length }),
+    );
   }
   return parts.join(' · ');
 }

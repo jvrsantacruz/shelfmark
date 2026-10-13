@@ -34,18 +34,13 @@ export const getActivityBadgeState = (
     colorClass = 'bg-amber-500';
   }
 
-  const counts = {
-    ongoing: statusCounts.ongoing,
-    completed: statusCounts.completed,
-    failed: statusCounts.errored,
-    pending: pendingRequests,
-  };
+  const counts = { ...statusCounts, pending: pendingRequests };
   const title = isAdmin
     ? t(
-        '{ongoing} ongoing, {completed} completed, {failed} failed, {pending} pending requests',
+        '{ongoing} ongoing, {completed} completed, {errored} failed, {pending} pending requests',
         counts,
       )
-    : t('{ongoing} ongoing, {completed} completed, {failed} failed', counts);
+    : t('{ongoing} ongoing, {completed} completed, {errored} failed', counts);
 
   return {
     total,

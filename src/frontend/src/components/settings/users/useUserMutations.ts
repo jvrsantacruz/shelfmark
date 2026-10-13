@@ -188,7 +188,7 @@ export const useUserMutations = ({
     setSyncingCwa(true);
     try {
       const result = await syncAdminCwaUsers();
-      onShowToast?.(result.message || t('Users synced from CWA'), 'success');
+      onShowToast?.(result.message ? t(result.message) : t('Users synced from CWA'), 'success');
       await fetchUsers({ force: true });
       return true;
     } catch (err) {

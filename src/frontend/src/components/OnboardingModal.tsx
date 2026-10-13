@@ -439,9 +439,7 @@ const OnboardingModalSession = ({
                 {clampedStepIndex + 1}
               </div>
               <div>
-                <h2 className="text-lg font-semibold">
-                  {currentStep?.title ? t(currentStep.title) : t('Setup')}
-                </h2>
+                <h2 className="text-lg font-semibold">{currentStep?.title || t('Setup')}</h2>
                 <p className="text-xs opacity-60">
                   {t('Step {current} of {total}', {
                     current: clampedStepIndex + 1,

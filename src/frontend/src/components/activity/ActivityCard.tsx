@@ -415,8 +415,6 @@ const RejectInlinePanel = ({
   onRequestRejectConfirm,
 }: RejectInlinePanelProps) => {
   const [rejectNote, setRejectNote] = useState('');
-  // The title is styled on its own, so the translated sentence is split around it.
-  const [rejectBefore, rejectAfter = ''] = t('Reject request for {title}').split('{title}');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInlineRejectConfirm = async () => {
@@ -436,9 +434,8 @@ const RejectInlinePanel = ({
   return (
     <div className="animate-fade-in -mx-4 mt-2 space-y-3 px-4 pb-2">
       <p className="text-xs font-medium">
-        {rejectBefore}
+        {t('Reject request for')}{' '}
         <span className="opacity-80">{itemTitle || t('Untitled request')}</span>
-        {rejectAfter}
       </p>
       <textarea
         aria-label={t('Optional note shown to the user')}

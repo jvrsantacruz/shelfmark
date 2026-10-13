@@ -132,7 +132,7 @@ export const DropdownList = ({
                 <div key={option.value}>
                   {showGroupHeader && (
                     <div className="px-3 pt-2 pb-1 text-xs font-medium tracking-wide uppercase opacity-60 select-none">
-                      {option.group}
+                      {option.group && t(option.group)}
                     </div>
                   )}
                   <button

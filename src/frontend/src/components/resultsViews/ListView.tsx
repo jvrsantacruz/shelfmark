@@ -318,11 +318,9 @@ export const ListView = ({
                       void handleDetails(book.id);
                     }}
                     disabled={isLoadingDetails}
-                    aria-label={
-                      book.title
-                        ? t('View details for {title}', { title: book.title })
-                        : t('View details for this book')
-                    }
+                    aria-label={t('View details for {title}', {
+                      title: book.title || t('this book'),
+                    })}
                   >
                     {isLoadingDetails ? (
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent sm:h-5 sm:w-5" />

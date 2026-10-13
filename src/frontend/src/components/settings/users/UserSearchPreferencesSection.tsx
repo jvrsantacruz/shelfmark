@@ -30,7 +30,7 @@ type SearchSettingKey =
   | 'DEFAULT_RELEASE_SOURCE'
   | 'DEFAULT_RELEASE_SOURCE_AUDIOBOOK';
 
-const getFallbackSearchModeField = (): SelectFieldConfig => ({
+const fallbackSearchModeField: SelectFieldConfig = {
   type: 'SelectField',
   key: 'SEARCH_MODE',
   label: t('Search Mode'),
@@ -38,38 +38,38 @@ const getFallbackSearchModeField = (): SelectFieldConfig => ({
   value: 'direct',
   options: [
     { value: 'direct', label: t('Direct') },
-    { value: 'universal', label: t('Universal') },
+    { value: 'universal', label: 'Universal' },
   ],
-});
+};
 
-const getFallbackMetadataProviderField = (): SelectFieldConfig => ({
+const fallbackMetadataProviderField: SelectFieldConfig = {
   type: 'SelectField',
   key: 'METADATA_PROVIDER',
   label: t('Book Metadata Provider'),
   description: t('Choose which metadata provider to use for book searches.'),
   value: '',
   options: [],
-});
+};
 
-const getFallbackAudiobookMetadataProviderField = (): SelectFieldConfig => ({
+const fallbackAudiobookMetadataProviderField: SelectFieldConfig = {
   type: 'SelectField',
   key: 'METADATA_PROVIDER_AUDIOBOOK',
   label: t('Audiobook Metadata Provider'),
   description: t('Metadata provider for audiobook searches. Uses the book provider if not set.'),
   value: '',
   options: [{ value: '', label: t('Use main provider') }],
-});
+};
 
-const getFallbackDefaultReleaseSourceField = (): SelectFieldConfig => ({
+const fallbackDefaultReleaseSourceField: SelectFieldConfig = {
   type: 'SelectField',
   key: 'DEFAULT_RELEASE_SOURCE',
   label: t('Default Book Release Source'),
   description: t('The release source tab to open by default in the release modal for books.'),
   value: 'direct_download',
   options: [],
-});
+};
 
-const getFallbackDefaultAudiobookReleaseSourceField = (): SelectFieldConfig => ({
+const fallbackDefaultAudiobookReleaseSourceField: SelectFieldConfig = {
   type: 'SelectField',
   key: 'DEFAULT_RELEASE_SOURCE_AUDIOBOOK',
   label: t('Default Audiobook Release Source'),
@@ -78,25 +78,25 @@ const getFallbackDefaultAudiobookReleaseSourceField = (): SelectFieldConfig => (
   ),
   value: '',
   options: [{ value: '', label: t('Use book release source') }],
-});
+};
 
-const getFallbackBookLanguageField = (): MultiSelectFieldConfig => ({
+const fallbackBookLanguageField: MultiSelectFieldConfig = {
   type: 'MultiSelectField',
   key: 'BOOK_LANGUAGE',
   label: t('Default Book Languages'),
   description: t('Default language filter for searches.'),
   value: [],
   options: [],
-});
+};
 
-const getSearchHeading = (): HeadingFieldConfig => ({
+const searchHeading: HeadingFieldConfig = {
   type: 'HeadingField',
   key: 'search_preferences_heading',
   title: t('Search Preferences'),
   description: t(
     'Personal search settings for this user. Reset to inherit global defaults from Search Mode.',
   ),
-});
+};
 
 const normalizeSearchMode = (value: unknown): 'direct' | 'universal' => {
   const normalized = toNormalizedLowercaseTextValue(value);
@@ -121,28 +121,28 @@ export const UserSearchPreferencesSection = ({
   const globalValues = searchPreferences.globalValues ?? {};
   const preferenceKeySet = new Set(searchPreferences.keys ?? []);
 
-  const searchModeField = getFieldByKey(fields, 'SEARCH_MODE', getFallbackSearchModeField());
+  const searchModeField = getFieldByKey(fields, 'SEARCH_MODE', fallbackSearchModeField);
   const metadataProviderField = getFieldByKey(
     fields,
     'METADATA_PROVIDER',
-    getFallbackMetadataProviderField(),
+    fallbackMetadataProviderField,
   );
   const metadataProviderAudiobookField = getFieldByKey(
     fields,
     'METADATA_PROVIDER_AUDIOBOOK',
-    getFallbackAudiobookMetadataProviderField(),
+    fallbackAudiobookMetadataProviderField,
   );
   const defaultReleaseSourceField = getFieldByKey(
     fields,
     'DEFAULT_RELEASE_SOURCE',
-    getFallbackDefaultReleaseSourceField(),
+    fallbackDefaultReleaseSourceField,
   );
   const defaultAudiobookReleaseSourceField = getFieldByKey(
     fields,
     'DEFAULT_RELEASE_SOURCE_AUDIOBOOK',
-    getFallbackDefaultAudiobookReleaseSourceField(),
+    fallbackDefaultAudiobookReleaseSourceField,
   );
-  const bookLanguageField = getFieldByKey(fields, 'BOOK_LANGUAGE', getFallbackBookLanguageField());
+  const bookLanguageField = getFieldByKey(fields, 'BOOK_LANGUAGE', fallbackBookLanguageField);
 
   const { value: bookLanguageValue, isOverridden: isBookLanguageOverridden } = resolveListOverride(
     userSettings.BOOK_LANGUAGE,
@@ -217,7 +217,7 @@ export const UserSearchPreferencesSection = ({
 
   return (
     <div className="space-y-4">
-      <HeadingField field={getSearchHeading()} />
+      <HeadingField field={searchHeading} />
 
       {canOverrideSearchMode && (
         <FieldWrapper

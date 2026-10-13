@@ -8,15 +8,10 @@ const catalogs: Record<string, Catalog> = { es };
 
 // The browser's preferred languages in order, matched on the primary subtag
 // (es-MX is es), then English.
-export function resolveLocale(preferred: readonly string[]): string {
-  for (const tag of preferred) {
-    const primary = tag.toLowerCase().split('-')[0];
-    if (Object.hasOwn(catalogs, primary)) {
-      return primary;
-    }
-  }
-  return 'en';
-}
+export const resolveLocale = (preferred: readonly string[]): string =>
+  preferred
+    .map((tag) => tag.toLowerCase().split('-')[0])
+    .find((code) => Object.hasOwn(catalogs, code)) ?? 'en';
 
 const fill = (text: string, values: Record<string, string | number>) =>
   text.replace(/\{(\w+)\}/g, (placeholder, name: string) =>
@@ -29,13 +24,8 @@ const lookup = (catalog: Catalog, text: string) =>
 
 const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-// Text the backend sends with a value already in it ("Failed to connect to
-// example.org") matches a catalog template ("Failed to connect to {host}"):
-// the values are read back out, each translated if the catalog has it as is
-// ("Failed to add: Connection refused"), and put into the translation. The template
-// with the most fixed text wins, so "{title}: {message}" never hides
-// "Failed to connect to {host}: {error}".
-// A linear scan over the templates: a map by first word would do if it gets slow.
+// Backend text with a value in it ("Failed to connect to example.org") matches a
+// {name} template; the template with the most fixed text wins. A linear scan.
 function matchTemplate(catalog: Catalog, text: string): string | undefined {
   let best: { fixed: number; result: string } | undefined;
   for (const [template, translation] of Object.entries(catalog)) {
@@ -61,9 +51,8 @@ export function translate(
   values?: Record<string, string | number>,
 ): string {
   const translation = lookup(catalog, text);
-  if (translation !== undefined) return values ? fill(translation, values) : translation;
-  if (values) return fill(text, values);
-  return matchTemplate(catalog, text) ?? text;
+  if (translation === undefined && !values) return matchTemplate(catalog, text) ?? text;
+  return fill(translation ?? text, values ?? {});
 }
 
 // Read once, at load: changing the language is a reload.

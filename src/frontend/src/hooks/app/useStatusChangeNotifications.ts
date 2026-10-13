@@ -87,11 +87,8 @@ export const useStatusChangeNotifications = ({
       Object.keys(currError).forEach((bookId) => {
         if (!prevError[bookId]) {
           const book = currError[bookId];
-          const errorMsg = book.status_message ? t(book.status_message) : t('Download failed');
-          showToast(
-            t('{title}: {message}', { title: book.title || t('Book'), message: errorMsg }),
-            'error',
-          );
+          const errorMsg = t(book.status_message || 'Download failed');
+          showToast(`${book.title || t('Book')}: ${errorMsg}`, 'error');
         }
       });
     },

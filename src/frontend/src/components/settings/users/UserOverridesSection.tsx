@@ -23,48 +23,48 @@ interface UserOverridesSectionProps {
   setUserSettings: (updater: (prev: PerUserSettings) => PerUserSettings) => void;
 }
 
-const getModeOptions = () => [
+const modeOptions = [
   { value: 'folder', label: t('Folder') },
   { value: 'email', label: t('Email (SMTP)') },
   { value: 'booklore', label: 'Grimmory (API)' },
 ];
 
-const getFallbackOutputModeField = (): SelectFieldConfig => ({
+const fallbackOutputModeField: SelectFieldConfig = {
   type: 'SelectField',
   key: 'BOOKS_OUTPUT_MODE',
   label: t('Output Mode'),
   description: t('Choose where completed book files are sent.'),
   value: 'folder',
-  options: getModeOptions(),
-});
+  options: modeOptions,
+};
 
-const getFallbackDestinationField = (): TextFieldConfig => ({
+const fallbackDestinationField: TextFieldConfig = {
   type: 'TextField',
   key: 'DESTINATION',
   label: t('Destination'),
   description: t('Directory where downloaded files are saved.'),
   value: '',
   placeholder: '/books',
-});
+};
 
-const getFallbackDestinationAudiobookField = (): TextFieldConfig => ({
+const fallbackDestinationAudiobookField: TextFieldConfig = {
   type: 'TextField',
   key: 'DESTINATION_AUDIOBOOK',
   label: t('Destination'),
   description: t("Directory for this user's audiobook downloads."),
   value: '',
-});
+};
 
-const getFallbackBookloreLibraryField = (): SelectFieldConfig => ({
+const fallbackBookloreLibraryField: SelectFieldConfig = {
   type: 'SelectField',
   key: 'BOOKLORE_LIBRARY_ID',
   label: t('Library'),
   description: t('Grimmory library to upload into.'),
   value: '',
   options: [],
-});
+};
 
-const getFallbackBooklorePathField = (): SelectFieldConfig => ({
+const fallbackBooklorePathField: SelectFieldConfig = {
   type: 'SelectField',
   key: 'BOOKLORE_PATH_ID',
   label: t('Path'),
@@ -72,18 +72,18 @@ const getFallbackBooklorePathField = (): SelectFieldConfig => ({
   value: '',
   options: [],
   filterByField: 'BOOKLORE_LIBRARY_ID',
-});
+};
 
-const getFallbackEmailRecipientField = (): TextFieldConfig => ({
+const fallbackEmailRecipientField: TextFieldConfig = {
   type: 'TextField',
   key: 'EMAIL_RECIPIENT',
   label: t('Email Recipient'),
   description: t('Email address used for this user in Email output mode.'),
   value: '',
   placeholder: 'reader@example.com',
-});
+};
 
-const getFallbackBrowserDownloadField = (): MultiSelectFieldConfig => ({
+const fallbackBrowserDownloadField: MultiSelectFieldConfig = {
   type: 'MultiSelectField',
   key: 'DOWNLOAD_TO_BROWSER_CONTENT_TYPES',
   label: t('Download to Browser'),
@@ -96,7 +96,7 @@ const getFallbackBrowserDownloadField = (): MultiSelectFieldConfig => ({
     { value: 'book', label: t('Books') },
     { value: 'audiobook', label: t('Audiobooks') },
   ],
-});
+};
 
 type DeliverySettingKey = keyof PerUserSettings;
 
@@ -112,30 +112,30 @@ function toStringValue(value: unknown): string {
   return toTextValue(value);
 }
 
-const getDeliveryHeading = (): HeadingFieldConfig => ({
+const deliveryHeading: HeadingFieldConfig = {
   type: 'HeadingField',
   key: 'delivery_preferences_heading',
   title: t('Delivery Preferences'),
   description: t(
     'Editing values here creates per-user settings. Use Reset to inherit global values.',
   ),
-});
+};
 
-const getBooksHeading = (): HeadingFieldConfig => ({
+const booksHeading: HeadingFieldConfig = {
   type: 'HeadingField',
   key: 'delivery_preferences_books_heading',
   title: t('Books'),
   description: t('Output mode and destination behavior for ebooks, comics, and magazines.'),
-});
+};
 
-const getAudiobooksHeading = (): HeadingFieldConfig => ({
+const audiobooksHeading: HeadingFieldConfig = {
   type: 'HeadingField',
   key: 'delivery_preferences_audiobooks_heading',
   title: t('Audiobooks'),
   description: t(
     'Audiobooks always use folder output. Use Reset to inherit the global audiobook destination.',
   ),
-});
+};
 
 const BOOK_PREFERENCE_KEYS: DeliverySettingKey[] = [
   'BOOKS_OUTPUT_MODE',
@@ -157,32 +157,28 @@ export const UserOverridesSection = ({
   const globalValues = deliveryPreferences?.globalValues ?? {};
   const preferenceKeys = deliveryPreferences?.keys ?? [];
 
-  const outputModeField = getFieldByKey(fields, 'BOOKS_OUTPUT_MODE', getFallbackOutputModeField());
-  const destinationField = getFieldByKey(fields, 'DESTINATION', getFallbackDestinationField());
+  const outputModeField = getFieldByKey(fields, 'BOOKS_OUTPUT_MODE', fallbackOutputModeField);
+  const destinationField = getFieldByKey(fields, 'DESTINATION', fallbackDestinationField);
   const destinationAudiobookField = getFieldByKey(
     fields,
     'DESTINATION_AUDIOBOOK',
-    getFallbackDestinationAudiobookField(),
+    fallbackDestinationAudiobookField,
   );
   const bookloreLibraryField = getFieldByKey(
     fields,
     'BOOKLORE_LIBRARY_ID',
-    getFallbackBookloreLibraryField(),
+    fallbackBookloreLibraryField,
   );
-  const booklorePathField = getFieldByKey(
-    fields,
-    'BOOKLORE_PATH_ID',
-    getFallbackBooklorePathField(),
-  );
+  const booklorePathField = getFieldByKey(fields, 'BOOKLORE_PATH_ID', fallbackBooklorePathField);
   const emailRecipientFieldSource = getFieldByKey(
     fields,
     'EMAIL_RECIPIENT',
-    getFallbackEmailRecipientField(),
+    fallbackEmailRecipientField,
   );
   const browserDownloadField = getFieldByKey(
     fields,
     'DOWNLOAD_TO_BROWSER_CONTENT_TYPES',
-    getFallbackBrowserDownloadField(),
+    fallbackBrowserDownloadField,
   );
   const emailRecipientField: TextFieldConfig = {
     ...emailRecipientFieldSource,
@@ -270,7 +266,7 @@ export const UserOverridesSection = ({
 
   return (
     <div className="space-y-4">
-      <HeadingField field={getDeliveryHeading()} />
+      <HeadingField field={deliveryHeading} />
 
       {canOverrideBrowserDownload && (
         <FieldWrapper
@@ -298,7 +294,7 @@ export const UserOverridesSection = ({
         </FieldWrapper>
       )}
 
-      <HeadingField field={getBooksHeading()} />
+      <HeadingField field={booksHeading} />
 
       {canOverrideOutputMode && (
         <FieldWrapper
@@ -414,7 +410,7 @@ export const UserOverridesSection = ({
 
       {canOverrideAudiobookDestination && (
         <>
-          <HeadingField field={getAudiobooksHeading()} />
+          <HeadingField field={audiobooksHeading} />
           <FieldWrapper
             field={destinationAudiobookField}
             resetAction={

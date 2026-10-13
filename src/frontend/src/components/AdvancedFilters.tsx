@@ -45,6 +45,21 @@ interface AdvancedFiltersProps {
   onClose?: () => void;
 }
 
+const SEARCH_MODE_OPTIONS = [
+  {
+    value: 'direct',
+    label: t('Direct'),
+    description: t('Search web sources for books and download directly. Works out of the box.'),
+  },
+  {
+    value: 'universal',
+    label: 'Universal',
+    description: t(
+      'Metadata-based search with downloads from all sources. Book and Audiobook support.',
+    ),
+  },
+];
+
 const EMPTY_PROVIDERS: MetadataProviderSummary[] = [];
 
 export const AdvancedFilters = ({
@@ -86,23 +101,6 @@ export const AdvancedFilters = ({
     }
     onFiltersChange({ formats: nextFormats });
   };
-
-  const searchModeOptions = [
-    {
-      value: 'direct',
-      label: t('Direct'),
-      description: t('Search web sources for books and download directly. Works out of the box.'),
-    },
-    {
-      value: 'universal',
-      label: t('Universal'),
-      description: t(
-        'Metadata-based search with downloads from all sources. Book and Audiobook support.',
-      ),
-    },
-  ];
-
-  const contentOptions = CONTENT_OPTIONS.map(({ value, label }) => ({ value, label: t(label) }));
 
   const formatOptions = FORMAT_TYPES.map((format) => ({
     value: format,
@@ -163,7 +161,7 @@ export const AdvancedFilters = ({
         <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           <DropdownList
             label={t('Search Mode')}
-            options={searchModeOptions}
+            options={SEARCH_MODE_OPTIONS}
             value={searchMode}
             onChange={(value) => {
               const next = Array.isArray(value) ? (value[0] ?? 'direct') : value;
@@ -204,7 +202,7 @@ export const AdvancedFilters = ({
             />
             <DropdownList
               label={t('Content')}
-              options={contentOptions}
+              options={CONTENT_OPTIONS}
               value={content}
               onChange={handleContentChange}
               placeholder={t('All')}

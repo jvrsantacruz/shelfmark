@@ -22,7 +22,11 @@ const formatSourceLabel = (value: unknown): string => {
     .join(' ');
 };
 
-const buildSeriesLine = (name: string, position: number | null, count: number | null): string => {
+export const buildSeriesLine = (
+  name: string,
+  position: number | null,
+  count: number | null,
+): string => {
   if (!name) return '';
   if (position != null) {
     return count

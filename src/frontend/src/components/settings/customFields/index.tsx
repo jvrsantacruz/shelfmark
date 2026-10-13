@@ -69,9 +69,7 @@ export const renderCustomSettingsField = (props: CustomSettingsFieldRendererProp
   if (!Renderer) {
     return (
       <p className="text-xs opacity-60">
-        {t('Unknown custom settings component: {component}', {
-          component: props.field.component,
-        })}
+        {t('Unknown custom settings component: {component}', { component: props.field.component })}
       </p>
     );
   }

@@ -185,7 +185,7 @@ const PasswordLoginForm = ({
         name="submit"
         disabled={isLoading}
         className="w-full rounded-lg bg-sky-700 px-4 py-2.5 font-medium text-white transition-colors hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-sky-700"
-        aria-label={t('Sign In')}
+        aria-label={t('Sign in')}
       >
         {isLoading ? (
           <span className="flex items-center justify-center">

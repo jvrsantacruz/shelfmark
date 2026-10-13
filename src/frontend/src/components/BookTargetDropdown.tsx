@@ -23,14 +23,6 @@ const stripCountSuffix = (label: string): string => {
   return label.replace(/\s+\(\d+\)\s*$/, '');
 };
 
-// Reading statuses are Hardcover's fixed names, translated; list names are the
-// user's own. The count suffix stays as it is.
-const translateOptionLabel = (value: string, label: string): string => {
-  if (!value.startsWith('status:')) return label;
-  const name = stripCountSuffix(label);
-  return t(name) + label.slice(name.length);
-};
-
 const BookmarkIcon = ({ className = 'h-4 w-4' }: { className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -178,9 +170,9 @@ const BookTargetDropdownSession = ({
 
     return options.map((option) => ({
       value: option.value,
-      label: translateOptionLabel(option.value, option.label),
-      description: option.description ? t(option.description) : option.description,
-      group: option.group ? t(option.group) : option.group,
+      label: option.label,
+      description: option.description,
+      group: option.group,
       disabled: !option.writable || pendingTargets.has(option.value),
     }));
   }, [isLoading, loadError, options, pendingTargets]);
@@ -233,9 +225,7 @@ const BookTargetDropdownSession = ({
                 selected: false,
               });
             }
-            const list = stripCountSuffix(
-              translateOptionLabel(toggledOption.value, toggledOption.label),
-            );
+            const list = stripCountSuffix(toggledOption.label);
             onShowToast?.(
               result.selected ? t('Added to {list}', { list }) : t('Removed from {list}', { list }),
               'success',

@@ -34,14 +34,14 @@ const REQUEST_POLICY_OVERRIDE_KEYS: Array<keyof PerUserSettings> = [
   'REQUESTS_ALLOW_NOTES',
 ];
 
-const getRequestPolicyHeading = (): HeadingFieldConfig => ({
+const requestPolicyHeading: HeadingFieldConfig = {
   type: 'HeadingField',
   key: 'request_policy_overrides_heading',
   title: t('Requests'),
   description: t(
     'Custom request settings for this user. Reset any to fall back to the global defaults.',
   ),
-});
+};
 
 const hasOwnNonNull = (settings: PerUserSettings, key: keyof PerUserSettings): boolean => {
   return (
@@ -165,7 +165,7 @@ export const UserRequestPolicyOverridesSection = ({
 
   return (
     <div className="space-y-3">
-      <HeadingField field={getRequestPolicyHeading()} />
+      <HeadingField field={requestPolicyHeading} />
 
       <RequestPolicyGrid
         defaultModes={effectiveDefaults}

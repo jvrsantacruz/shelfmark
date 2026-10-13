@@ -447,8 +447,10 @@ const parseBaseOption = (
   const value = toStringValue(option.value) ?? '';
   const label = typeof option.label === 'string' ? option.label : value;
   const group = typeof option.group === 'string' ? option.group : undefined;
-  const description = typeof option.description === 'string' ? option.description : undefined;
-  return { value, label, group, description };
+  const description = typeof option.description === 'string' ? t(option.description) : undefined;
+  // Hardcover statuses are fixed text, list names are the user's own. The group is
+  // compared in code, so it is translated where it is shown.
+  return { value, label: value.startsWith('status:') ? t(label) : label, group, description };
 };
 
 const parseOptionList = (raw: unknown): ReturnType<typeof parseBaseOption>[] => {
@@ -770,11 +772,11 @@ function translateSettings<T>(value: T): T {
 
 // Settings API functions
 export const getSettings = async (): Promise<SettingsResponse> => {
-  return translateSettings(await fetchJSON<SettingsResponse>(API.settings));
+  return fetchJSON<SettingsResponse>(API.settings).then(translateSettings);
 };
 
 export const getSettingsTab = async (tabName: string): Promise<SettingsTab> => {
-  return translateSettings(await fetchJSON<SettingsTab>(`${API.settings}/${tabName}`));
+  return fetchJSON<SettingsTab>(`${API.settings}/${tabName}`).then(translateSettings);
 };
 
 export const updateSettings = async (
@@ -784,7 +786,7 @@ export const updateSettings = async (
   return fetchJSON<UpdateResult>(`${API.settings}/${tabName}`, {
     method: 'PUT',
     body: JSON.stringify(values),
-  });
+  }).then(translateSettings);
 };
 
 export const executeSettingsAction = async (
@@ -830,7 +832,7 @@ interface OnboardingConfig {
 }
 
 export const getOnboarding = async (): Promise<OnboardingConfig> => {
-  return translateSettings(await fetchJSON<OnboardingConfig>(`${API_BASE}/onboarding`));
+  return fetchJSON<OnboardingConfig>(`${API_BASE}/onboarding`).then(translateSettings);
 };
 
 export const saveOnboarding = async (
@@ -1017,31 +1019,25 @@ export interface DeliveryPreferencesResponse {
 export const getAdminDeliveryPreferences = async (
   userId: number,
 ): Promise<DeliveryPreferencesResponse> => {
-  return translateSettings(
-    await fetchJSON<DeliveryPreferencesResponse>(
-      `${API_BASE}/admin/users/${userId}/delivery-preferences`,
-    ),
-  );
+  return fetchJSON<DeliveryPreferencesResponse>(
+    `${API_BASE}/admin/users/${userId}/delivery-preferences`,
+  ).then(translateSettings);
 };
 
 export const getAdminSearchPreferences = async (
   userId: number,
 ): Promise<DeliveryPreferencesResponse> => {
-  return translateSettings(
-    await fetchJSON<DeliveryPreferencesResponse>(
-      `${API_BASE}/admin/users/${userId}/search-preferences`,
-    ),
-  );
+  return fetchJSON<DeliveryPreferencesResponse>(
+    `${API_BASE}/admin/users/${userId}/search-preferences`,
+  ).then(translateSettings);
 };
 
 export const getAdminNotificationPreferences = async (
   userId: number,
 ): Promise<DeliveryPreferencesResponse> => {
-  return translateSettings(
-    await fetchJSON<DeliveryPreferencesResponse>(
-      `${API_BASE}/admin/users/${userId}/notification-preferences`,
-    ),
-  );
+  return fetchJSON<DeliveryPreferencesResponse>(
+    `${API_BASE}/admin/users/${userId}/notification-preferences`,
+  ).then(translateSettings);
 };
 
 export const testAdminUserNotificationPreferences = async (
@@ -1107,13 +1103,9 @@ export const getAdminSettingsOverridesSummary = async (
 };
 
 export const getSelfUserEditContext = async (): Promise<SelfUserEditContext> => {
-  const context = await fetchJSON<SelfUserEditContext>(`${API_BASE}/users/me/edit-context`);
-  translateSettings([
-    context.deliveryPreferences,
-    context.searchPreferences,
-    context.notificationPreferences,
-  ]);
-  return context;
+  return fetchJSON<SelfUserEditContext>(`${API_BASE}/users/me/edit-context`).then(
+    translateSettings,
+  );
 };
 
 export const updateSelfUser = async (

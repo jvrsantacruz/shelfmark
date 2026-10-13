@@ -22,12 +22,12 @@ const UserCardShell = ({ title, children }: { title: string; children: ReactNode
   </div>
 );
 
-const getCreateRoleOptions = (): SelectOption[] => [
+const CREATE_ROLE_OPTIONS: SelectOption[] = [
   { value: 'user', label: t('User') },
   { value: 'admin', label: t('Admin') },
 ];
 
-const getEditRoleOptions = (): SelectOption[] => [
+const EDIT_ROLE_OPTIONS: SelectOption[] = [
   { value: 'admin', label: t('Admin') },
   { value: 'user', label: t('User') },
 ];
@@ -104,11 +104,7 @@ const renderPasswordField = (
   </FieldWrapper>
 );
 
-const getRoleLabel = (role: string) => {
-  if (role === 'admin') return t('Admin');
-  if (role === 'user') return t('User');
-  return role.charAt(0).toUpperCase() + role.slice(1);
-};
+const getRoleLabel = (role: string) => t(role.charAt(0).toUpperCase() + role.slice(1));
 
 const getRoleBadgeClassName = (role: string, disabled = false) =>
   `inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium leading-none ${
@@ -152,7 +148,7 @@ export const UserRoleControl = ({
   if (canEditRole && onUserChange) {
     return (
       <DropdownList
-        options={getEditRoleOptions()}
+        options={EDIT_ROLE_OPTIONS}
         value={user.role}
         onChange={(value) => {
           const nextRole = Array.isArray(value) ? (value[0] ?? '') : value;
@@ -375,7 +371,7 @@ export const UserCreateCard = ({
     t('username'),
     true,
   );
-  const roleField = createRoleField(form.role, getCreateRoleOptions());
+  const roleField = createRoleField(form.role, CREATE_ROLE_OPTIONS);
   const displayNameField = createTextField(
     'display_name',
     t('Display Name'),

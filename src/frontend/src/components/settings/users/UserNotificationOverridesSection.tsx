@@ -28,19 +28,19 @@ type NotificationSettingKey = 'USER_NOTIFICATION_ROUTES';
 
 const ROUTE_EVENT_ALL = 'all';
 const USER_ROUTE_EVENT_OPTIONS = [
-  { value: ROUTE_EVENT_ALL, label: 'All' },
-  { value: 'request_created', label: 'New request submitted' },
-  { value: 'request_fulfilled', label: 'Request approved' },
-  { value: 'request_rejected', label: 'Request rejected' },
-  { value: 'download_complete', label: 'Download complete' },
-  { value: 'download_failed', label: 'Download failed' },
+  { value: ROUTE_EVENT_ALL, label: t('All') },
+  { value: 'request_created', label: t('New request submitted') },
+  { value: 'request_fulfilled', label: t('Request approved') },
+  { value: 'request_rejected', label: t('Request rejected') },
+  { value: 'download_complete', label: t('Download complete') },
+  { value: 'download_failed', label: t('Download failed') },
 ];
 const ALLOWED_ROUTE_EVENTS = new Set(USER_ROUTE_EVENT_OPTIONS.map((option) => option.value));
 const ROUTE_EVENT_ORDER = new Map(
   USER_ROUTE_EVENT_OPTIONS.map((option, index) => [option.value, index]),
 );
 
-const getFallbackRoutesField = (): TableFieldConfig => ({
+const fallbackRoutesField: TableFieldConfig = {
   type: 'TableField',
   key: 'USER_NOTIFICATION_ROUTES',
   label: '',
@@ -53,10 +53,7 @@ const getFallbackRoutesField = (): TableFieldConfig => ({
       key: 'event',
       label: t('Event'),
       type: 'multiselect',
-      options: USER_ROUTE_EVENT_OPTIONS.map((option) => ({
-        value: option.value,
-        label: t(option.label),
-      })),
+      options: USER_ROUTE_EVENT_OPTIONS,
       defaultValue: [ROUTE_EVENT_ALL],
       placeholder: t('Select events...'),
     },
@@ -69,24 +66,24 @@ const getFallbackRoutesField = (): TableFieldConfig => ({
   ],
   addLabel: t('Add Route'),
   emptyMessage: t('No routes configured.'),
-});
+};
 
-const getNotificationHeading = (): HeadingFieldConfig => ({
+const notificationHeading: HeadingFieldConfig = {
   type: 'HeadingField',
   key: 'notification_preferences_heading',
   title: t('Notifications'),
   description: t(
     'Personal notification preferences for this user. Reset to inherit global defaults from the Notifications tab.',
   ),
-});
+};
 
-const getTestNotificationActionField = (): ActionButtonConfig => ({
+const testNotificationActionField: ActionButtonConfig = {
   type: 'ActionButton',
   key: 'test_user_notification',
   label: t('Test Notification'),
   description: t('Send a test notification to the configured personal route URLs.'),
   style: 'primary',
-});
+};
 
 const normalizeRouteEvents = (rawEventValue: unknown): string[] => {
   let rawValues: unknown[] = [];
@@ -162,7 +159,7 @@ export const UserNotificationOverridesSection = ({
   const fields = notificationPreferences.fields ?? [];
   const globalValues = notificationPreferences.globalValues ?? {};
 
-  const routesField = getFieldByKey(fields, 'USER_NOTIFICATION_ROUTES', getFallbackRoutesField());
+  const routesField = getFieldByKey(fields, 'USER_NOTIFICATION_ROUTES', fallbackRoutesField);
 
   const isOverridden = (key: NotificationSettingKey): boolean => {
     if (
@@ -209,7 +206,7 @@ export const UserNotificationOverridesSection = ({
 
   return (
     <div className="space-y-4">
-      <HeadingField field={getNotificationHeading()} />
+      <HeadingField field={notificationHeading} />
 
       <FieldWrapper
         field={routesField}
@@ -234,7 +231,7 @@ export const UserNotificationOverridesSection = ({
 
       {onTestNotificationRoutes && (
         <ActionButton
-          field={getTestNotificationActionField()}
+          field={testNotificationActionField}
           onAction={() => onTestNotificationRoutes(routesValue)}
           disabled={Boolean(routesField.fromEnv)}
         />

@@ -152,10 +152,7 @@ export const NamingTemplateField = ({
                     type="button"
                     onClick={() => insertToken(token.token)}
                     disabled={fieldDisabled}
-                    title={t('{description}: {value}', {
-                      description: t(token.description),
-                      value: token.value,
-                    })}
+                    title={`${t(token.description)}: ${token.value}`}
                     className="inline-flex min-h-8 max-w-full items-center rounded-md bg-zinc-500/15 px-2.5 py-1 font-mono text-xs transition-colors hover:bg-zinc-500/25 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {`{${token.token}}`}

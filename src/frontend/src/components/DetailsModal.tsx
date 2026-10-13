@@ -9,6 +9,7 @@ import type { Book, ButtonStateInfo } from '../types';
 import { isMetadataBook } from '../types';
 import { bookSupportsTargets } from '../utils/bookTargetLoader';
 import { isUserCancelledError } from '../utils/errors';
+import { buildSeriesLine } from '../utils/requestConfirmation';
 import { BookTargetDropdown } from './BookTargetDropdown';
 import { LibraryBadge, isInLibrary } from './shared';
 
@@ -151,19 +152,6 @@ export const DetailsModal = ({
   const infoLabelClass = 'text-[11px] uppercase tracking-wide text-gray-500 dark:text-gray-400';
   const infoValueClass = 'text-gray-900 dark:text-gray-100';
 
-  let seriesText = book.series_name;
-  if (book.series_position != null) {
-    seriesText = book.series_count
-      ? t('#{position} of {count} in {series}', {
-          position: book.series_position,
-          count: book.series_count,
-          series: book.series_name ?? '',
-        })
-      : t('#{position} in {series}', {
-          position: book.series_position,
-          series: book.series_name ?? '',
-        });
-  }
   const modal = (
     <div className="modal-overlay active sm:px-6 sm:py-6">
       {isQueuing && buttonState.state !== 'download' && (
@@ -327,7 +315,13 @@ export const DetailsModal = ({
                   <div className={`${infoCardClass} space-y-1`}>
                     <p className={infoLabelClass}>{t('Series')}</p>
                     <div className="flex items-center justify-between gap-2">
-                      <p className={infoValueClass}>{seriesText}</p>
+                      <p className={infoValueClass}>
+                        {buildSeriesLine(
+                          book.series_name,
+                          book.series_position ?? null,
+                          book.series_count ?? null,
+                        )}
+                      </p>
                       {onSearchSeries && (
                         <button
                           type="button"

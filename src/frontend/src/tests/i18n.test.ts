@@ -10,10 +10,10 @@ import { resolveLocale, translate } from '../i18n/index';
 const sourceStrings = (dir: string): string[] =>
   readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const path = join(dir, entry.name);
-    if (entry.isDirectory()) return entry.name === 'tests' ? [] : sourceStrings(path);
+    if (entry.isDirectory()) return sourceStrings(path);
     if (!/\.tsx?$/.test(entry.name)) return [];
     return [...readFileSync(path, 'utf8').matchAll(/\bt\(\s*(['"])((?:\\.|(?!\1).)*)\1/g)].map(
-      (match) => match[2].replace(/\\(['"\\])/g, '$1'),
+      (match) => match[2],
     );
   });
 

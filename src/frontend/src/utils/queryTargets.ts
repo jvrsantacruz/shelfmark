@@ -1,4 +1,3 @@
-import { t } from '../i18n';
 import type { MetadataSearchField, QueryTargetOption, SearchMode, TextSearchField } from '../types';
 
 const makeDirectField = (
@@ -13,36 +12,35 @@ const makeDirectField = (
   description,
 });
 
-// Built on each call, so the labels are translated when they are shown.
-const generalQueryTarget = (): QueryTargetOption => ({
+const GENERAL_QUERY_TARGET: QueryTargetOption = {
   key: 'general',
-  label: t('General'),
-  description: t('Search across all supported fields.'),
+  label: 'General',
+  description: 'Search across all supported fields.',
   source: 'general',
-});
+};
 
-const directQueryTargets = (): QueryTargetOption[] => [
-  generalQueryTarget(),
+const DIRECT_QUERY_TARGETS: QueryTargetOption[] = [
+  GENERAL_QUERY_TARGET,
   {
     key: 'isbn',
     label: 'ISBN',
-    description: t('Search for an exact ISBN.'),
+    description: 'Search for an exact ISBN.',
     source: 'direct-field',
-    field: makeDirectField('isbn', 'ISBN', t('Search by ISBN')),
+    field: makeDirectField('isbn', 'ISBN', 'Search by ISBN'),
   },
   {
     key: 'author',
-    label: t('Author'),
-    description: t('Search by author name.'),
+    label: 'Author',
+    description: 'Search by author name.',
     source: 'direct-field',
-    field: makeDirectField('author', t('Author'), t('Search by author name')),
+    field: makeDirectField('author', 'Author', 'Search by author name'),
   },
   {
     key: 'title',
-    label: t('Title'),
-    description: t('Search by title.'),
+    label: 'Title',
+    description: 'Search by title.',
     source: 'direct-field',
-    field: makeDirectField('title', t('Title'), t('Search by title')),
+    field: makeDirectField('title', 'Title', 'Search by title'),
   },
 ];
 
@@ -64,19 +62,19 @@ export const buildQueryTargets = ({
   manualSearchAllowed?: boolean;
 }): QueryTargetOption[] => {
   if (searchMode === 'direct') {
-    return directQueryTargets();
+    return DIRECT_QUERY_TARGETS;
   }
 
   const targets: QueryTargetOption[] = [
-    generalQueryTarget(),
+    GENERAL_QUERY_TARGET,
     ...metadataSearchFields.map(mapMetadataFieldToTarget),
   ];
 
   if (manualSearchAllowed) {
     targets.push({
       key: 'manual',
-      label: t('Manual'),
-      description: t('Search release sources directly.'),
+      label: 'Manual',
+      description: 'Search release sources directly.',
       source: 'manual',
     });
   }

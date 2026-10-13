@@ -280,7 +280,7 @@ export const Header = forwardRef<HeaderHandle, HeaderProps>(
             isRecord(errorData) && typeof errorData.error === 'string'
               ? errorData.error
               : response.statusText;
-          onShowToast?.(t('Debug download failed: {error}', { error: errorMessage }), 'error');
+          onShowToast?.(t('Debug download failed: {error}', { error: t(errorMessage) }), 'error');
           return;
         }
 
@@ -403,7 +403,7 @@ export const Header = forwardRef<HeaderHandle, HeaderProps>(
               {activityBadge && (
                 <span
                   className={`absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-[0.55rem] font-bold text-white ${activityBadge.colorClass}`}
-                  title={t(activityBadge.title)}
+                  title={activityBadge.title}
                 >
                   {activityBadge.total}
                 </span>
@@ -637,7 +637,7 @@ export const Header = forwardRef<HeaderHandle, HeaderProps>(
                     {adminUsersError && (
                       <div className="flex items-center justify-between gap-3">
                         <div className="text-xs text-red-600 dark:text-red-400">
-                          {t(adminUsersError)}
+                          {adminUsersError}
                         </div>
                         <button
                           type="button"

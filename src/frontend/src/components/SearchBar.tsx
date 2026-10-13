@@ -543,20 +543,13 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       }
     };
 
-    const selectorTarget = activeTarget ? t(activeTarget.label) : t('general');
-    let selectorAriaLabel = t('Searching audiobooks by {target}. Click to change.', {
-      target: selectorTarget,
-    });
+    let selectorContentTypeLabel = t('audiobooks');
     let selectorIcon = <AudiobookIcon />;
     if (combinedSelectionActive) {
-      selectorAriaLabel = t('Searching books and audiobooks by {target}. Click to change.', {
-        target: selectorTarget,
-      });
+      selectorContentTypeLabel = t('books and audiobooks');
       selectorIcon = <BothIcon />;
     } else if (contentType === 'ebook') {
-      selectorAriaLabel = t('Searching books by {target}. Click to change.', {
-        target: selectorTarget,
-      });
+      selectorContentTypeLabel = t('books');
       selectorIcon = <BookIcon />;
     }
 
@@ -618,7 +611,10 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                 }}
                 className="hover-action flex cursor-pointer items-center gap-1.5 rounded-l-full pr-2 pl-5 transition-colors"
                 style={{ color: 'var(--text)' }}
-                aria-label={selectorAriaLabel}
+                aria-label={t('Searching {content} by {target}. Click to change.', {
+                  content: selectorContentTypeLabel,
+                  target: activeTarget ? t(activeTarget.label) : t('general'),
+                })}
                 aria-expanded={isSelectorOpen}
                 aria-controls={SEARCH_CONTROLS_PANEL_ID}
               >
@@ -730,7 +726,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                     <div key={option.value}>
                       {showGroupHeader && (
                         <div className="px-5 pt-2 pb-1 text-xs font-medium tracking-wide uppercase opacity-60 select-none">
-                          {option.group}
+                          {option.group && t(option.group)}
                         </div>
                       )}
                       <button
@@ -791,7 +787,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
 
                 {!isAutocompleteLoading && autocompleteOptions.length === 0 && (
                   <div className="px-5 py-3 text-sm opacity-70" style={{ color: 'var(--text)' }}>
-                    {t(autocompleteEmptyMessage)}
+                    {autocompleteEmptyMessage}
                   </div>
                 )}
 

@@ -52,6 +52,7 @@ import {
   FORMAT_SORT_KEY,
   sortReleasesByFormat,
 } from '../utils/releaseSort';
+import { buildSeriesLine } from '../utils/requestConfirmation';
 import { BookDownloadButton } from './BookDownloadButton';
 import { BookTargetDropdown } from './BookTargetDropdown';
 import { Dropdown } from './Dropdown';
@@ -1372,11 +1373,9 @@ const ReleaseModalSession = ({
     emptyStateMessage =
       combinedPhase === 'ebook' ? t('No book releases found.') : t('No audiobook releases found.');
   }
-  let combinedNextLabel = '';
+  let combinedNextLabel = selectedRelease ? t('Select Book →') : t('Skip Audiobook →');
   if (combinedPhase === 'ebook') {
     combinedNextLabel = selectedRelease ? t('Select Audiobook →') : t('Skip Book →');
-  } else {
-    combinedNextLabel = selectedRelease ? t('Select Book →') : t('Skip Audiobook →');
   }
   let modalAnimationClassName = '';
   if (isClosing) {
@@ -1407,19 +1406,6 @@ const ReleaseModalSession = ({
       }
     : undefined;
 
-  let seriesText = t('Part of {series}', { series: book.series_name ?? '' });
-  if (book.series_position != null) {
-    seriesText = book.series_count
-      ? t('#{position} of {count} in {series}', {
-          position: book.series_position,
-          count: book.series_count,
-          series: book.series_name ?? '',
-        })
-      : t('#{position} in {series}', {
-          position: book.series_position,
-          series: book.series_name ?? '',
-        });
-  }
   const modal = (
     <div className="modal-overlay active sm:px-6 sm:py-6">
       <button
@@ -1639,7 +1625,15 @@ const ReleaseModalSession = ({
                   {/* Series info */}
                   {book.series_name && (
                     <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-                      <span>{seriesText}</span>
+                      <span>
+                        {book.series_position != null
+                          ? buildSeriesLine(
+                              book.series_name,
+                              book.series_position,
+                              book.series_count ?? null,
+                            )
+                          : t('Part of {series}', { series: book.series_name })}
+                      </span>
                       {onSearchSeries && (
                         <button
                           type="button"
@@ -1706,7 +1700,7 @@ const ReleaseModalSession = ({
                   <div className="mt-auto flex flex-wrap items-center gap-3 text-xs">
                     {(book.isbn_13 || book.isbn_10) && (
                       <span className="text-zinc-500 dark:text-zinc-400">
-                        {t('ISBN: {isbn}', { isbn: book.isbn_13 || book.isbn_10 || '' })}
+                        ISBN: {book.isbn_13 || book.isbn_10}
                       </span>
                     )}
                     {showBookSourceLink && (
@@ -1845,10 +1839,7 @@ const ReleaseModalSession = ({
                       const totalStr = isCapped ? '500+' : String(totalCountNum);
                       return (
                         <span className="mx-2 shrink-0 text-xs whitespace-nowrap text-gray-500 dark:text-gray-400">
-                          {t('Results 1-{end} ({total} Total)', {
-                            end: shownEnd,
-                            total: totalStr,
-                          })}
+                          {t('Results 1-{end} ({total} Total)', { end: shownEnd, total: totalStr })}
                         </span>
                       );
                     })()}
@@ -2340,9 +2331,7 @@ const ReleaseModalSession = ({
                             }}
                             className="hover-action rounded-full px-3 py-1.5 text-sm text-zinc-500 transition-all duration-200 dark:text-zinc-400"
                           >
-                            {columnConfig.action_button
-                              ? t(columnConfig.action_button.label)
-                              : t('Expand search')}
+                            {t(columnConfig.action_button?.label ?? 'Expand search')}
                           </button>
                         </div>
                       )}
@@ -2400,9 +2389,7 @@ const ReleaseModalSession = ({
                             }}
                             className="hover-action rounded-full px-3 py-1.5 text-sm text-zinc-500 transition-all duration-200 dark:text-zinc-400"
                           >
-                            {columnConfig.action_button
-                              ? t(columnConfig.action_button.label)
-                              : t('Expand search')}
+                            {t(columnConfig.action_button?.label ?? 'Expand search')}
                           </button>
                         </div>
                       )}
