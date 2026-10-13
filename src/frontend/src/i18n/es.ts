@@ -2473,4 +2473,38 @@ export const es: Catalog = {
   'Hardcover API returned an invalid response':
     'La API de Hardcover devolvió una respuesta no válida',
   'Hardcover API request failed': 'Falló la petición a la API de Hardcover',
+  'Debrid-Link API Key is required': 'La clave de API de Debrid-Link es obligatoria',
+  'Debrid-Link API Key from your Debrid-Link account settings':
+    'Clave de API de Debrid-Link de los ajustes de tu cuenta de Debrid-Link',
+  'Verify your Debrid-Link configuration': 'Comprueba tu configuración de Debrid-Link',
+  'Unexpected response from Debrid-Link account endpoint':
+    'Respuesta inesperada de la cuenta de Debrid-Link',
+  "Debrid-Link user '{username}' does not have an active Premium subscription":
+    "El usuario '{username}' de Debrid-Link no tiene una suscripción Premium activa",
+  "Connected to Debrid-Link as '{username}' (Premium)":
+    "Conectado a Debrid-Link como '{username}' (Premium)",
+  'Debrid-Link API key is not configured': 'La clave de API de Debrid-Link no está configurada',
+  'No torrent ID returned from Debrid-Link': 'Debrid-Link no devolvió ningún ID de torrent',
+  'Unexpected response when adding a torrent to Debrid-Link':
+    'Respuesta inesperada al añadir un torrent a Debrid-Link',
+  'Debrid-Link {operation} failed: {detail}': 'Falló {operation} en Debrid-Link: {detail}',
+  'Debrid-Link error': 'Error de Debrid-Link',
+  'Torrent {download_id} is no longer on Debrid-Link':
+    'El torrent {download_id} ya no está en Debrid-Link',
+  'Debrid-Link unreachable, retrying': 'No se puede conectar con Debrid-Link, reintentando',
+  'Debrid-Link ready, retrieving files...': 'Debrid-Link listo, obteniendo archivos...',
+  'Starting on Debrid-Link ({name})': 'Iniciando en Debrid-Link ({name})',
+  'Debrid-Link server maintenance, waiting': 'Debrid-Link está en mantenimiento, esperando',
+  'Paused on Debrid-Link ({name})': 'En pausa en Debrid-Link ({name})',
+  'Queued on Debrid-Link ({name})': 'En cola en Debrid-Link ({name})',
+  'Debrid-Link verifying torrent ({name})': 'Debrid-Link está verificando el torrent ({name})',
+  'Debrid-Link downloading torrent ({name})': 'Debrid-Link está descargando el torrent ({name})',
+  'No download links returned by Debrid-Link': 'Debrid-Link no devolvió enlaces de descarga',
+  'Failed to download {rel_path} from Debrid-Link':
+    'No se pudo descargar {rel_path} de Debrid-Link',
+  '{service} returned a file without a name': '{service} devolvió un archivo sin nombre',
+  '{service} returned a file without a usable name':
+    '{service} devolvió un archivo sin un nombre válido',
+  '{service} returned an unsafe file path: {name}':
+    '{service} devolvió una ruta de archivo insegura: {name}',
 };
