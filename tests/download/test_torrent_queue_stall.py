@@ -83,6 +83,14 @@ def test_a_queued_torrent_asks_for_a_grace_once() -> None:
     assert rec.graces.count(bh.QUEUE_GRACE_SECONDS) == 1
 
 
+def test_a_queued_torrent_asks_for_a_grace_on_a_host_just_booted() -> None:
+    # time.monotonic() counts from boot: a CI runner is often up for under a minute.
+    rec = _poll([_status(Q)] * 4, clock=[60.0 + i for i in range(100)])
+
+    assert rec.graces[0] == bh.QUEUE_GRACE_SECONDS
+    assert rec.graces.count(bh.QUEUE_GRACE_SECONDS) == 1
+
+
 def test_the_grace_is_released_when_the_torrent_starts() -> None:
     rec = _poll([_status(Q), _status(Q), _status(D, 5.0), _status(D, 6.0)])
 
