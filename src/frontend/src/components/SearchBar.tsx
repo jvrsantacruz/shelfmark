@@ -1,15 +1,18 @@
-import type { InputHTMLAttributes } from 'react';
-import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import type { ComponentType, InputHTMLAttributes, ReactNode } from 'react';
+import { forwardRef, useId, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
 import { useSearchMode } from '../contexts/SearchModeContext';
 import { useSearchBarAutocomplete } from '../hooks/searchBar/useSearchBarAutocomplete';
 import { useDismiss } from '../hooks/useDismiss';
 import { useLatestCallback } from '../hooks/useLatestCallback';
+import { t } from '../i18n';
 import type { DynamicFieldOption } from '../services/api';
 import type { ContentType, MetadataSearchField, QueryTargetOption, SortOption } from '../types';
 import { SearchBarAutocompleteSession } from './SearchBarAutocompleteSession';
 import { SearchBarDynamicOptionsSession } from './SearchBarDynamicOptionsSession';
-import { Tooltip } from './shared/Tooltip';
+import { ToggleSwitch } from './shared/ToggleSwitch';
+
+type SearchOptionsLayout = 'popover' | 'inline';
 
 interface SearchBarProps {
   value: string | number | boolean;
@@ -41,6 +44,7 @@ interface SearchBarProps {
   onQueryTargetChange?: (target: string) => void;
   activeQueryField?: MetadataSearchField | null;
   disabled?: boolean;
+  optionsLayout: SearchOptionsLayout;
 }
 
 export interface SearchBarHandle {
@@ -51,7 +55,24 @@ const EMPTY_SORT_OPTIONS: SortOption[] = [];
 const EMPTY_AUTOCOMPLETE_OPTIONS: DynamicFieldOption[] = [];
 const EMPTY_QUERY_TARGETS: QueryTargetOption[] = [];
 
-const SEARCH_CONTROLS_PANEL_ID = 'search-bar-controls-panel';
+const OPTIONS_LAYOUT_CLASSES: Record<
+  SearchOptionsLayout,
+  { panel: string; group: string; options: string; option: string }
+> = {
+  popover: {
+    panel: 'flex flex-col divide-y divide-(--border-muted)',
+    group: 'flex flex-col gap-2 py-3 first:pt-0 last:pb-0',
+    options: 'grid grid-cols-2 gap-2',
+    option: '',
+  },
+  inline: {
+    panel:
+      'animate-fade-in-down flex flex-col gap-4 px-1 pt-2 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-8 sm:gap-y-2',
+    group: 'flex min-w-0 flex-col gap-2',
+    options: 'flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-2',
+    option: 'max-sm:border-transparent',
+  },
+};
 
 const BookIcon = () => (
   <svg
@@ -117,6 +138,18 @@ const CheckIcon = ({ className = 'w-3.5 h-3.5' }: { className?: string }) => (
   </svg>
 );
 
+const CONTENT_TYPE_OPTIONS: { type: ContentType; label: string; Icon: ComponentType }[] = [
+  { type: 'ebook', label: 'Books', Icon: BookIcon },
+  { type: 'audiobook', label: 'Audiobooks', Icon: AudiobookIcon },
+];
+
+const OptionsGroupHeader = ({ label, action }: { label: string; action: ReactNode }) => (
+  <div className="flex min-h-7 items-center justify-between px-1">
+    <span className="text-xs font-medium opacity-60">{label}</span>
+    {action}
+  </div>
+);
+
 const getDefaultPlaceholder = (
   contentType: ContentType,
   activeQueryTarget: QueryTargetOption | undefined,
@@ -126,20 +159,20 @@ const getDefaultPlaceholder = (
   if (fallback) return fallback;
 
   if (!activeQueryTarget || activeQueryTarget.source === 'general') {
-    if (isCombinedMode) return 'Search Books & Audiobooks';
-    return contentType === 'ebook' ? 'Search Books' : 'Search Audiobooks';
+    if (isCombinedMode) return t('Search Books & Audiobooks');
+    return contentType === 'ebook' ? t('Search Books') : t('Search Audiobooks');
   }
 
   if (activeQueryTarget.source === 'manual') {
-    return 'Search releases directly…';
+    return t('Search releases directly…');
   }
 
   const field = activeQueryTarget.field;
   if (field?.placeholder) {
-    return field.placeholder;
+    return t(field.placeholder);
   }
 
-  return `Search by ${activeQueryTarget.label.toLowerCase()}…`;
+  return t('Search by {field}…', { field: t(activeQueryTarget.label).toLowerCase() });
 };
 
 const hasActiveValue = (value: string | number | boolean): boolean => {
@@ -170,14 +203,14 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       onAdvancedToggle,
       isAdvancedActive = false,
       placeholder,
-      inputAriaLabel = 'Search books',
+      inputAriaLabel = t('Search books'),
       className = '',
       inputClassName = '',
       controlsClassName = '',
-      clearButtonLabel = 'Clear search input',
-      clearButtonTitle = 'Clear search',
-      searchButtonLabel = 'Search books',
-      searchButtonTitle = 'Search',
+      clearButtonLabel = t('Clear search input'),
+      clearButtonTitle = t('Clear search'),
+      searchButtonLabel = t('Search books'),
+      searchButtonTitle = t('Search'),
       autoComplete = 'off',
       enterKeyHint = 'search',
       contentType = 'ebook',
@@ -191,6 +224,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       onQueryTargetChange,
       activeQueryField,
       disabled = false,
+      optionsLayout,
     },
     ref,
   ) => {
@@ -202,13 +236,17 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
     const submitLatest = useLatestCallback(() => onSubmit());
     const selectorRef = useRef<HTMLDivElement>(null);
     const hasSearchQuery = hasActiveValue(value);
-    const [isSelectorOpen, setIsSelectorOpen] = useState(false);
     const [isSelectOpen, setIsSelectOpen] = useState(false);
     const [isAutocompleteOpen, setIsAutocompleteOpen] = useState(false);
     const selectTriggerRef = useRef<HTMLButtonElement>(null);
     const selectPanelRef = useRef<HTMLDivElement>(null);
     const autocompletePanelRef = useRef<HTMLDivElement>(null);
-    const controlsPanelRef = useRef<HTMLDivElement>(null);
+    const optionsPanelId = useId();
+    const optionsPanelRef = useRef<HTMLDivElement>(null);
+    const isPopover = optionsLayout === 'popover';
+    const layoutClasses = OPTIONS_LAYOUT_CLASSES[optionsLayout];
+    const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+    const closeOptions = () => setIsOptionsOpen(false);
 
     const hasMultipleContentTypes = !allowedContentTypes || allowedContentTypes.length !== 1;
     const showContentTypeSelector =
@@ -233,11 +271,9 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
     const combinedSelectionActive = combinedMode && !isManualTarget;
     const combinedSelectorLocked = combinedModeLocked && !isManualTarget;
     const combinedToggleAvailable = !!onCombinedModeChange && !isManualTarget;
-    const combinedLineColor = combinedSelectionActive
-      ? 'bg-emerald-500'
-      : 'bg-(--border-muted) group-hover:bg-zinc-400 dark:group-hover:bg-zinc-500';
 
-    useDismiss(isSelectorOpen, [selectorRef, controlsPanelRef], () => setIsSelectorOpen(false));
+    // The inline panel renders below the bar, outside selectorRef.
+    useDismiss(isOptionsOpen, [selectorRef, optionsPanelRef], closeOptions);
     useDismiss(isSelectOpen, [selectPanelRef, selectTriggerRef], () => setIsSelectOpen(false));
     useDismiss(isAutocompleteOpen, [autocompletePanelRef, inputRef], () =>
       setIsAutocompleteOpen(false),
@@ -341,13 +377,11 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       onCombinedModeChange?.(false);
     };
 
-    const handleCombinedModeSelect = () => {
-      if (combinedMode) {
-        onCombinedModeChange?.(false);
-      } else {
+    const handleCombinedModeToggle = (enabled: boolean) => {
+      if (enabled) {
         onContentTypeChange?.('ebook');
-        onCombinedModeChange?.(true);
       }
+      onCombinedModeChange?.(enabled);
     };
 
     const handleQueryTargetSelect = (targetKey: string) => {
@@ -360,6 +394,9 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       setIsSelectOpen(shouldOpenSelect);
       setIsAutocompleteOpen(false);
       resetAutocomplete();
+      if (shouldOpenSelect) {
+        closeOptions();
+      }
     };
 
     const effectivePlaceholder = getDefaultPlaceholder(
@@ -369,7 +406,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       combinedSelectionActive,
     );
     const effectiveInputAriaLabel = activeTarget
-      ? `${inputAriaLabel}: ${activeTarget.label}`
+      ? `${inputAriaLabel}: ${t(activeTarget.label)}`
       : inputAriaLabel;
 
     const selectDropdownOpen = isSelectField && isSelectOpen && selectOptions.length > 0;
@@ -479,7 +516,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
             <span className="truncate opacity-50">{effectivePlaceholder}</span>
           );
           if (isDynamicLoading) {
-            selectTriggerContent = <span className="truncate opacity-50">Loading…</span>;
+            selectTriggerContent = <span className="truncate opacity-50">{t('Loading…')}</span>;
           } else if (selectedOption) {
             selectTriggerContent = <span className="truncate">{selectedOption.label}</span>;
           }
@@ -528,11 +565,11 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                 type="checkbox"
                 checked={Boolean(value)}
                 onChange={(e) => onChange(e.target.checked)}
-                aria-label={activeQueryField.label}
+                aria-label={t(activeQueryField.label)}
                 className="h-4 w-4 rounded-sm border-(--border-muted) text-emerald-500 focus:ring-emerald-500/50"
               />
               <span className="truncate text-sm" style={{ color: 'var(--text)' }}>
-                {activeQueryField.label}
+                {t(activeQueryField.label)}
               </span>
             </label>
           );
@@ -542,15 +579,123 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
       }
     };
 
-    let selectorContentTypeLabel = 'audiobooks';
+    let selectorContentTypeLabel = t('audiobooks');
     let selectorIcon = <AudiobookIcon />;
     if (combinedSelectionActive) {
-      selectorContentTypeLabel = 'books and audiobooks';
+      selectorContentTypeLabel = t('books and audiobooks');
       selectorIcon = <BothIcon />;
     } else if (contentType === 'ebook') {
-      selectorContentTypeLabel = 'books';
+      selectorContentTypeLabel = t('books');
       selectorIcon = <BookIcon />;
     }
+
+    const activeOptionClasses =
+      searchMode === 'direct'
+        ? 'border-sky-700/70 bg-sky-700 text-white'
+        : 'border-emerald-500/70 bg-emerald-600 text-white';
+    const optionClasses = (isActive: boolean) =>
+      `flex min-w-0 cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
+        isActive ? activeOptionClasses : 'hover-surface border-(--border-muted) text-(--text)'
+      } ${layoutClasses.option}`;
+
+    const optionsButton = onAdvancedToggle ? (
+      <button
+        type="button"
+        onClick={() => {
+          if (isPopover) {
+            closeOptions();
+          }
+          onAdvancedToggle();
+        }}
+        className={`-mt-1.5 -mr-1 -mb-0.5 flex cursor-pointer items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-medium transition-colors ${
+          isAdvancedActive ? activeOptionClasses : 'hover-surface text-(--text-muted)'
+        }`}
+      >
+        <svg
+          className="h-3.5 w-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+          />
+        </svg>
+        {t('Options')}
+      </button>
+    ) : null;
+
+    const optionsPanel = (
+      <div id={optionsPanelId} ref={optionsPanelRef} className={layoutClasses.panel}>
+        {showContentTypeSelector && (
+          <div className={layoutClasses.group}>
+            <OptionsGroupHeader label={t('Content')} action={optionsButton} />
+            <div className={layoutClasses.options}>
+              {CONTENT_TYPE_OPTIONS.map(({ type, label, Icon }) => {
+                const isActive = contentType === type || combinedSelectionActive;
+                return (
+                  <button
+                    type="button"
+                    key={type}
+                    onClick={() => handleContentTypeSelect(type)}
+                    className={optionClasses(isActive)}
+                  >
+                    <span className="flex w-4 justify-center">
+                      {isActive ? <CheckIcon /> : <Icon />}
+                    </span>
+                    <span>{t(label)}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {combinedToggleAvailable && (
+              <div className="flex items-center gap-3 px-1 py-1 text-sm font-medium">
+                {t('Combined')}
+                <ToggleSwitch
+                  checked={combinedSelectionActive}
+                  onChange={handleCombinedModeToggle}
+                  disabled={combinedSelectorLocked}
+                  color="emerald"
+                  ariaLabel={t('Combined search')}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        {queryTargets.length > 1 && (
+          <div className={layoutClasses.group}>
+            <OptionsGroupHeader
+              label={t('Search by')}
+              action={showContentTypeSelector ? null : optionsButton}
+            />
+            <div className={layoutClasses.options}>
+              {queryTargets.map((target) => {
+                const isActive = target.key === activeTarget?.key;
+                return (
+                  <button
+                    type="button"
+                    key={target.key}
+                    onClick={() => handleQueryTargetSelect(target.key)}
+                    title={t(target.description || target.label)}
+                    aria-label={t(target.label)}
+                    className={optionClasses(isActive)}
+                  >
+                    {isActive && <CheckIcon />}
+                    <span className="block truncate">{t(target.label)}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    );
 
     const dynamicOptionsSession = dynamicEndpoint ? (
       <SearchBarDynamicOptionsSession
@@ -604,24 +749,28 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
               <button
                 type="button"
                 onClick={() => {
-                  setIsSelectorOpen((prev) => !prev);
+                  setIsOptionsOpen((prev) => !prev);
                   setIsSelectOpen(false);
                   setIsAutocompleteOpen(false);
                 }}
                 className="hover-action flex cursor-pointer items-center gap-1.5 rounded-l-full pr-2 pl-5 transition-colors"
                 style={{ color: 'var(--text)' }}
-                aria-label={`Searching ${selectorContentTypeLabel} by ${activeTarget?.label ?? 'general'}. Click to change.`}
-                aria-expanded={isSelectorOpen}
-                aria-controls={SEARCH_CONTROLS_PANEL_ID}
+                aria-label={t('Searching {content} by {target}. Click to change.', {
+                  content: selectorContentTypeLabel,
+                  target: activeTarget ? t(activeTarget.label) : t('general'),
+                })}
+                aria-expanded={isOptionsOpen}
+                aria-controls={optionsPanelId}
+                aria-haspopup={isPopover ? 'dialog' : undefined}
               >
                 {selectorIcon}
                 {showActiveTargetLabel && (
                   <span className="hidden max-w-24 truncate text-sm font-medium sm:inline">
-                    {activeTarget?.label}
+                    {activeTarget && t(activeTarget.label)}
                   </span>
                 )}
                 <svg
-                  className={`h-3 w-3 opacity-50 transition-transform duration-200 ${isSelectorOpen ? 'rotate-180' : ''}`}
+                  className={`h-3 w-3 opacity-50 transition-transform duration-200 ${isOptionsOpen ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -639,6 +788,18 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                 className="absolute top-1/2 right-0 h-6 w-px -translate-y-1/2"
                 style={{ background: 'var(--border-muted)' }}
               />
+
+              {isPopover && isOptionsOpen && (
+                <div
+                  className="animate-fade-in-down absolute top-full left-0 z-50 mt-2 w-[min(20rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-(--border-muted) bg-(--bg) shadow-2xl"
+                  role="dialog"
+                  aria-label="Search context"
+                >
+                  <div className="max-h-[min(24rem,calc(100vh-8rem))] overflow-y-auto p-3">
+                    {optionsPanel}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -722,7 +883,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
                     <div key={option.value}>
                       {showGroupHeader && (
                         <div className="px-5 pt-2 pb-1 text-xs font-medium tracking-wide uppercase opacity-60 select-none">
-                          {option.group}
+                          {option.group && t(option.group)}
                         </div>
                       )}
                       <button
@@ -772,12 +933,12 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
               className="animate-fade-in-down absolute top-full right-0 left-0 z-50 mt-2 overflow-hidden rounded-2xl border shadow-xl"
               style={{ background: 'var(--bg)', borderColor: 'var(--border-muted)' }}
               role="listbox"
-              aria-label={`${effectiveInputAriaLabel} suggestions`}
+              aria-label={t('{label} suggestions', { label: effectiveInputAriaLabel })}
             >
               <div className="max-h-72 overflow-y-auto py-1.5">
                 {isAutocompleteLoading && (
                   <div className="px-5 py-3 text-sm opacity-70" style={{ color: 'var(--text)' }}>
-                    Searching…
+                    {t('Searching…')}
                   </div>
                 )}
 
@@ -821,245 +982,7 @@ export const SearchBar = forwardRef<SearchBarHandle, SearchBarProps>(
           )}
         </div>
 
-        {showQueryTargetSelector && isSelectorOpen && (
-          <div
-            id={SEARCH_CONTROLS_PANEL_ID}
-            className="animate-fade-in-down flex flex-wrap items-start gap-x-8 gap-y-2 px-1 pt-2"
-            ref={controlsPanelRef}
-          >
-            {showContentTypeSelector && (
-              <div className="shrink-0">
-                <div className="flex items-center justify-between pb-1.5">
-                  <span className="text-xs font-medium tracking-wide uppercase opacity-60">
-                    Content
-                  </span>
-                  {onAdvancedToggle && (
-                    <button
-                      type="button"
-                      onClick={onAdvancedToggle}
-                      className={`-mt-1.5 -mr-1 -mb-0.5 flex cursor-pointer items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-medium transition-colors ${
-                        isAdvancedActive ? 'bg-emerald-600 text-white' : 'hover-surface'
-                      }`}
-                      style={
-                        isAdvancedActive
-                          ? { borderColor: 'rgb(16 185 129 / 0.7)' }
-                          : { color: 'var(--text-muted)' }
-                      }
-                    >
-                      <svg
-                        className="h-3.5 w-3.5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                        />
-                      </svg>
-                      Options
-                    </button>
-                  )}
-                </div>
-                <div className="grid w-fit grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleContentTypeSelect('ebook')}
-                    className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
-                      contentType === 'ebook' || combinedSelectionActive
-                        ? 'bg-emerald-600 text-white'
-                        : 'hover-surface'
-                    }`}
-                    style={
-                      contentType === 'ebook' || combinedSelectionActive
-                        ? { borderColor: 'rgb(16 185 129 / 0.7)' }
-                        : { color: 'var(--text)', borderColor: 'var(--border-muted)' }
-                    }
-                  >
-                    <span className="flex w-4 justify-center">
-                      {contentType === 'ebook' || combinedSelectionActive ? (
-                        <CheckIcon />
-                      ) : (
-                        <BookIcon />
-                      )}
-                    </span>
-                    <span>Books</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleContentTypeSelect('audiobook')}
-                    className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
-                      contentType === 'audiobook' || combinedSelectionActive
-                        ? 'bg-emerald-600 text-white'
-                        : 'hover-surface'
-                    }`}
-                    style={
-                      contentType === 'audiobook' || combinedSelectionActive
-                        ? { borderColor: 'rgb(16 185 129 / 0.7)' }
-                        : { color: 'var(--text)', borderColor: 'var(--border-muted)' }
-                    }
-                  >
-                    <span className="flex w-4 justify-center">
-                      {contentType === 'audiobook' || combinedSelectionActive ? (
-                        <CheckIcon />
-                      ) : (
-                        <AudiobookIcon />
-                      )}
-                    </span>
-                    <span>Audiobooks</span>
-                  </button>
-                  {combinedToggleAvailable && (
-                    <div className="col-span-2">
-                      <Tooltip
-                        content="Combined search"
-                        position="bottom"
-                        triggerClassName="w-full"
-                      >
-                        <button
-                          type="button"
-                          onClick={handleCombinedModeSelect}
-                          className="group w-full cursor-pointer"
-                          aria-label="Combined search"
-                        >
-                          <div className="relative flex h-7 items-end">
-                            <div
-                              className={`absolute top-1.5 bottom-[11px] left-[25%] w-px transition-colors ${combinedLineColor}`}
-                            />
-                            <div
-                              className={`absolute top-1.5 right-[25%] bottom-[11px] w-px transition-colors ${combinedLineColor}`}
-                            />
-                            <div
-                              className={`absolute bottom-[11px] left-[25%] h-px transition-colors ${combinedLineColor}`}
-                              style={{ width: 'calc(25% - 16px)' }}
-                            />
-                            <div
-                              className={`absolute right-[25%] bottom-[11px] h-px transition-colors ${combinedLineColor}`}
-                              style={{ width: 'calc(25% - 16px)' }}
-                            />
-                            <div
-                              className={`relative z-10 mx-auto rounded-full p-1 transition-colors ${
-                                combinedSelectionActive
-                                  ? 'bg-emerald-600 text-white'
-                                  : 'bg-(--bg) text-zinc-400 group-hover:bg-zinc-200 group-hover:text-zinc-600 dark:text-zinc-500 dark:group-hover:bg-zinc-700 dark:group-hover:text-zinc-300'
-                              }`}
-                            >
-                              <svg
-                                className="h-3.5 w-3.5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                              >
-                                {combinedSelectorLocked ? (
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
-                                  />
-                                ) : (
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
-                                  />
-                                )}
-                              </svg>
-                            </div>
-                          </div>
-                        </button>
-                      </Tooltip>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {queryTargets.length > 1 && (
-              <div className="shrink-0">
-                <div className="flex items-center justify-between pb-1.5">
-                  <span className="text-xs font-medium tracking-wide uppercase opacity-60">
-                    Search By
-                  </span>
-                  {!showContentTypeSelector && onAdvancedToggle && (
-                    <button
-                      type="button"
-                      onClick={onAdvancedToggle}
-                      className={`-mt-1.5 -mr-1 -mb-0.5 flex cursor-pointer items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-medium transition-colors ${
-                        isAdvancedActive
-                          ? `${searchMode === 'direct' ? 'bg-sky-700' : 'bg-emerald-600'} text-white`
-                          : 'hover-surface'
-                      }`}
-                      style={
-                        isAdvancedActive
-                          ? {
-                              borderColor:
-                                searchMode === 'direct'
-                                  ? 'rgb(3 105 161 / 0.7)'
-                                  : 'rgb(16 185 129 / 0.7)',
-                            }
-                          : { color: 'var(--text-muted)' }
-                      }
-                    >
-                      <svg
-                        className="h-3.5 w-3.5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                        />
-                      </svg>
-                      Options
-                    </button>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {queryTargets.map((target) => {
-                    const isActive = target.key === activeTarget?.key;
-                    return (
-                      <button
-                        type="button"
-                        key={target.key}
-                        onClick={() => handleQueryTargetSelect(target.key)}
-                        title={target.description || target.label}
-                        aria-label={target.label}
-                        className={`flex min-w-0 cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
-                          isActive
-                            ? `${searchMode === 'direct' ? 'bg-sky-700' : 'bg-emerald-600'} text-white`
-                            : 'hover-surface'
-                        }`}
-                        style={
-                          isActive
-                            ? {
-                                borderColor:
-                                  searchMode === 'direct'
-                                    ? 'rgb(3 105 161 / 0.7)'
-                                    : 'rgb(16 185 129 / 0.7)',
-                              }
-                            : { color: 'var(--text)', borderColor: 'var(--border-muted)' }
-                        }
-                      >
-                        {isActive && <CheckIcon />}
-                        <span className="block truncate">{target.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+        {showQueryTargetSelector && !isPopover && isOptionsOpen && optionsPanel}
       </>
     );
   },

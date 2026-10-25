@@ -7,8 +7,7 @@ import shutil
 import threading
 import time
 from dataclasses import dataclass, field
-from pathlib import Path, PurePosixPath, PureWindowsPath
-from typing import Any, ClassVar, NoReturn
+from typing import TYPE_CHECKING, Any, ClassVar, NoReturn
 from urllib.parse import urlparse
 
 import requests
@@ -27,13 +26,22 @@ from shelfmark.download.clients.torrent_utils import (
     DebridMagnet,
     DebridUpload,
     resolve_debrid_upload,
+    safe_relative_path,
 )
 from shelfmark.download.http import download_url
 from shelfmark.download.network import get_ssl_verify
 
+if TYPE_CHECKING:
+    from pathlib import Path
+
 logger = setup_logger(__name__)
 
 _API_BASE = "https://api.torbox.app/v1/api"
+
+# One session for every client instance, so the status poll every couple of seconds
+# reuses a keep-alive connection instead of opening a new TLS connection each time.
+_session = requests.Session()
+
 _API_TIMEOUT = 30
 _STATUS_TIMEOUT = 15
 _WORKER_JOIN_TIMEOUT = 5.0
@@ -317,7 +325,7 @@ class TorBoxClient(DownloadClient):
             "verify": get_ssl_verify(url),
             **kwargs,
         }
-        request: Any = requests.get if method == "GET" else requests.post
+        request: Any = _session.get if method == "GET" else _session.post
         try:
             response = request(url, **request_kwargs)
         except requests.exceptions.RequestException as e:
@@ -605,29 +613,7 @@ class TorBoxClient(DownloadClient):
     @classmethod
     def _safe_relative_path(cls, file_info: dict[str, Any], target_dir: Path) -> Path:
         """Validate external file metadata before writing below ``target_dir``."""
-        name = cls._file_name(file_info)
-        if not name:
-            _raise_runtime_error("TorBox returned a file without a name")
-
-        normalized = name.replace("\\", "/")
-        relative_path = PurePosixPath(normalized)
-        windows_path = PureWindowsPath(name)
-        if (
-            relative_path.is_absolute()
-            or windows_path.is_absolute()
-            or windows_path.drive
-            or ".." in relative_path.parts
-        ):
-            _raise_runtime_error(f"TorBox returned an unsafe file path: {name}")
-        if relative_path == PurePosixPath("."):
-            _raise_runtime_error("TorBox returned a file without a usable name")
-
-        destination = (target_dir / Path(*relative_path.parts)).resolve()
-        try:
-            destination.relative_to(target_dir.resolve())
-        except ValueError:
-            _raise_runtime_error(f"TorBox returned an unsafe file path: {name}")
-        return Path(*relative_path.parts)
+        return safe_relative_path(cls._file_name(file_info), target_dir, "TorBox")
 
     @staticmethod
     def _set_error(state: _DownloadState, message: str) -> None:

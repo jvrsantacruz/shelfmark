@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import ipaddress
 import re
+import socket
 import time
 from binascii import Error as BinasciiError
 from dataclasses import dataclass
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from threading import Lock
 from urllib.parse import ParseResult, parse_qs, urljoin, urlparse, urlunparse
 
@@ -37,7 +40,8 @@ _TORRENT_FETCH_ERRORS = (
     ValueError,
 )
 _TORRENT_PARSE_ERRORS = (IndexError, KeyError, TypeError, ValueError)
-_TRUSTED_TORRENT_FETCH_URL_CONFIG_KEYS = ("PROWLARR_URL", "NEWZNAB_URL")
+_PROWLARR_KEY_URL_CONFIG_KEYS = ("PROWLARR_URL", "NEWZNAB_URL")
+_TRUSTED_TORRENT_FETCH_URL_CONFIG_KEYS = (*_PROWLARR_KEY_URL_CONFIG_KEYS, "JACKETT_URL")
 
 # Successful torrent fetches are reused for a short window so one add attempt
 # hits the download link only once. Tracker download links (e.g. private
@@ -261,8 +265,13 @@ def _fetch_torrent_info(url: str) -> TorrentInfo:
         current_url = url
         redirects_remaining = _TORRENT_FETCH_MAX_REDIRECTS
         while True:
+            trusted = _is_trusted_torrent_fetch_url(current_url)
+            _check_torrent_fetch_hop(current_url, trusted=trusted)
             request_headers = dict(headers)
-            if not _is_trusted_torrent_fetch_url(current_url):
+            # Jackett links carry their own key; Prowlarr's must never reach Jackett.
+            if not trusted or not _is_trusted_torrent_fetch_url(
+                current_url, _PROWLARR_KEY_URL_CONFIG_KEYS
+            ):
                 request_headers.pop("X-Api-Key", None)
 
             resp = requests.get(
@@ -327,13 +336,43 @@ def _fetch_torrent_info(url: str) -> TorrentInfo:
         return TorrentInfo(info_hash=None, torrent_data=None, is_magnet=False, fetch_error=message)
 
 
-def _is_trusted_torrent_fetch_url(url: str) -> bool:
+def _resolve_host_addresses(host: str) -> list[str]:
+    """Resolve a host with the system resolver; raises OSError when it does not resolve."""
+    return [str(info[4][0]) for info in socket.getaddrinfo(host, None, proto=socket.IPPROTO_TCP)]
+
+
+def _is_public_address(address: str) -> bool:
+    ip = ipaddress.ip_address(address.split("%", 1)[0])
+    if isinstance(ip, ipaddress.IPv6Address) and ip.ipv4_mapped is not None:
+        ip = ip.ipv4_mapped
+    return ip.is_global
+
+
+def _check_torrent_fetch_hop(url: str, *, trusted: bool) -> None:
+    """Refuse a fetch hop that is not http(s) or that resolves to a non-public address.
+
+    The configured Prowlarr/Newznab origin is exempt because it commonly lives
+    on the LAN and its own download links point back at it.
+    """
+    parsed = urlparse(url)
+    if parsed.scheme.lower() not in {"http", "https"} or not parsed.hostname:
+        raise ValueError("torrent fetch refused: URL is not http or https")
+    if trusted:
+        return
+    addresses = _resolve_host_addresses(parsed.hostname)
+    if not addresses or not all(_is_public_address(address) for address in addresses):
+        raise ValueError("torrent fetch refused: address is not public")
+
+
+def _is_trusted_torrent_fetch_url(
+    url: str, config_keys: tuple[str, ...] = _TRUSTED_TORRENT_FETCH_URL_CONFIG_KEYS
+) -> bool:
     parsed = urlparse(url)
     origin = _url_origin(parsed)
     if origin is None:
         return False
 
-    for key in _TRUSTED_TORRENT_FETCH_URL_CONFIG_KEYS:
+    for key in config_keys:
         configured_url = str(config.get(key, "") or "").strip()
         if not configured_url:
             continue
@@ -588,3 +627,37 @@ def extract_hash_from_magnet(magnet_url: str) -> str | None:
                 return btmh_hash
 
     return None
+
+
+def safe_relative_path(name: str, target_dir: Path, service: str) -> Path:
+    """Validate a service-supplied file name before anything is written below ``target_dir``.
+
+    Debrid services pass torrent file names straight through, and a torrent can name a
+    file ``../../etc/cron.d/x``. Absolute paths, drive letters and ``..`` segments are
+    refused, and the resolved destination must stay inside ``target_dir``.
+    """
+    if not name:
+        msg = f"{service} returned a file without a name"
+        raise RuntimeError(msg)
+
+    relative_path = PurePosixPath(name.replace("\\", "/"))
+    windows_path = PureWindowsPath(name)
+    if (
+        relative_path.is_absolute()
+        or windows_path.is_absolute()
+        or windows_path.drive
+        or ".." in relative_path.parts
+    ):
+        msg = f"{service} returned an unsafe file path: {name}"
+        raise RuntimeError(msg)
+    if relative_path == PurePosixPath("."):
+        msg = f"{service} returned a file without a usable name"
+        raise RuntimeError(msg)
+
+    destination = (target_dir / Path(*relative_path.parts)).resolve()
+    try:
+        destination.relative_to(target_dir.resolve())
+    except ValueError:
+        msg = f"{service} returned an unsafe file path: {name}"
+        raise RuntimeError(msg) from None
+    return Path(*relative_path.parts)

@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
 import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useMountEffect } from '../../hooks/useMountEffect';
+import { t } from '../../i18n';
 import type { AdminUser, DeliveryPreferencesResponse } from '../../services/api';
 import {
   getSelfUserEditContext,
@@ -33,17 +34,24 @@ interface SelfSettingsModalProps {
 
 const MIN_PASSWORD_LENGTH = 4;
 
-const getPasswordError = (password: string, passwordConfirm: string): string | null => {
+const getPasswordError = (
+  password: string,
+  passwordConfirm: string,
+  currentPassword: string,
+): string | null => {
   if (!password && !passwordConfirm) {
     return null;
   }
   if (!password) {
-    return 'Password is required';
+    return t('Password is required');
   }
   if (password.length < MIN_PASSWORD_LENGTH) {
-    return `Password must be at least ${MIN_PASSWORD_LENGTH} characters`;
+    return t('Password must be at least {count} characters', { count: MIN_PASSWORD_LENGTH });
   }
-  return password === passwordConfirm ? null : 'Passwords do not match';
+  if (!currentPassword) {
+    return t('Current password is required');
+  }
+  return password === passwordConfirm ? null : t('Passwords do not match');
 };
 
 const getErrorMessage = (error: unknown, fallback: string): string => {
@@ -121,6 +129,7 @@ const SelfSettingsModalSession = ({
 
   const [editPassword, setEditPassword] = useState('');
   const [editPasswordConfirm, setEditPasswordConfirm] = useState('');
+  const [editCurrentPassword, setEditCurrentPassword] = useState('');
 
   const [themeValue, setThemeValue] = useState(getStoredThemePreference());
 
@@ -157,8 +166,9 @@ const SelfSettingsModalSession = ({
       });
       setEditPassword('');
       setEditPasswordConfirm('');
+      setEditCurrentPassword('');
     } catch (error) {
-      setLoadError(getErrorMessage(error, 'Failed to load account settings'));
+      setLoadError(getErrorMessage(error, t('Failed to load account settings')));
     } finally {
       setIsLoading(false);
     }
@@ -185,7 +195,7 @@ const SelfSettingsModalSession = ({
   );
 
   const hasPasswordChanges = editPassword.length > 0 || editPasswordConfirm.length > 0;
-  const passwordError = getPasswordError(editPassword, editPasswordConfirm);
+  const passwordError = getPasswordError(editPassword, editPasswordConfirm, editCurrentPassword);
   const hasChanges = hasSettingsChanges || hasProfileChanges || hasPasswordChanges;
 
   const handleTestNotificationRoutes = useCallback((routes: Array<Record<string, unknown>>) => {
@@ -205,6 +215,7 @@ const SelfSettingsModalSession = ({
       email?: string | null;
       display_name?: string | null;
       password?: string;
+      current_password?: string;
       settings?: Record<string, unknown>;
     } = {};
 
@@ -219,6 +230,7 @@ const SelfSettingsModalSession = ({
     }
     if (editingUser.edit_capabilities.canSetPassword && editPassword) {
       payload.password = editPassword;
+      payload.current_password = editCurrentPassword;
     }
     if (hasSettingsChanges) {
       payload.settings = currentSettingsPayload;
@@ -231,11 +243,11 @@ const SelfSettingsModalSession = ({
     setIsSaving(true);
     try {
       await updateSelfUser(payload);
-      onShowToast?.('Account updated', 'success');
+      onShowToast?.(t('Account updated'), 'success');
       onSettingsSaved?.();
       await loadEditContext();
     } catch (error) {
-      onShowToast?.(getErrorMessage(error, 'Failed to update account'), 'error');
+      onShowToast?.(getErrorMessage(error, t('Failed to update account')), 'error');
     } finally {
       setIsSaving(false);
     }
@@ -249,6 +261,7 @@ const SelfSettingsModalSession = ({
     originalUser,
     passwordError,
     editPassword,
+    editCurrentPassword,
   ]);
 
   if (!isOpen && !isClosing) {
@@ -267,7 +280,7 @@ const SelfSettingsModalSession = ({
         className={`absolute inset-0 bg-black/60 transition-opacity duration-150 ${isClosing ? 'opacity-0' : 'opacity-100'}`}
         onClick={handleClose}
         tabIndex={-1}
-        aria-label="Close account settings"
+        aria-label={t('Close account settings')}
       />
 
       <div
@@ -279,19 +292,19 @@ const SelfSettingsModalSession = ({
       >
         <header className="flex items-center justify-between border-b border-(--border-muted) px-6 py-4">
           <h3 id={titleId} className="sr-only">
-            My Account
+            {t('My Account')}
           </h3>
           {editingUser ? (
             <UserIdentityHeader user={editingUser} showAuthSource showInactiveState={false} />
           ) : (
-            <div className="text-sm font-medium">My Account</div>
+            <div className="text-sm font-medium">{t('My Account')}</div>
           )}
           <div className="flex items-center">
             <button
               type="button"
               onClick={handleClose}
               className="hover-action rounded-full p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400 dark:hover:text-gray-100"
-              aria-label="Close account settings"
+              aria-label={t('Close account settings')}
               disabled={isSaving}
             >
               <svg
@@ -312,7 +325,7 @@ const SelfSettingsModalSession = ({
             if (showInitialLoadingState) {
               return (
                 <div className="flex h-full items-center justify-center text-sm opacity-60">
-                  Loading account settings...
+                  {t('Loading account settings...')}
                 </div>
               );
             }
@@ -328,7 +341,7 @@ const SelfSettingsModalSession = ({
                     }}
                     className="rounded-lg border border-(--border-muted) bg-(--bg-soft) px-4 py-2 text-sm font-medium transition-colors hover:bg-(--hover-surface)"
                   >
-                    Retry
+                    {t('Retry')}
                   </button>
                 </div>
               );
@@ -359,6 +372,8 @@ const SelfSettingsModalSession = ({
                     onEditPasswordChange={setEditPassword}
                     editPasswordConfirm={editPasswordConfirm}
                     onEditPasswordConfirmChange={setEditPasswordConfirm}
+                    editCurrentPassword={editCurrentPassword}
+                    onEditCurrentPasswordChange={setEditCurrentPassword}
                     preferencesPlacement="after"
                     preferencesPanel={{
                       hideTitle: true,
@@ -383,7 +398,7 @@ const SelfSettingsModalSession = ({
 
             return (
               <div className="flex h-full items-center justify-center text-sm opacity-60">
-                Unable to load account details.
+                {t('Unable to load account details.')}
               </div>
             );
           })()}

@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import type { PackBook } from '../types';
 
 /** Return a copy of `books` with one entry patched; the input is not mutated. */
@@ -24,16 +25,41 @@ export function toBookPlanPayload(books: PackBook[]): PackBook[] {
     .filter((book) => book.title.length > 0 && book.files.length > 0);
 }
 
-function plural(count: number, noun: string): string {
-  return `${count} ${noun}${count === 1 ? '' : 's'}`;
+/** Books with the user-ignored files removed; books left with no files are dropped. */
+export function applyIgnoredFiles(books: PackBook[], ignored: ReadonlySet<string>): PackBook[] {
+  if (ignored.size === 0) return books;
+  return books
+    .map((book) => ({ ...book, files: book.files.filter((file) => !ignored.has(file)) }))
+    .filter((book) => book.files.length > 0);
+}
+
+/** Add or remove every file of a book from the ignored set (returns a new set). */
+export function setBookIgnored(
+  ignored: ReadonlySet<string>,
+  book: PackBook,
+  shouldIgnore: boolean,
+): Set<string> {
+  const next = new Set(ignored);
+  for (const file of book.files) {
+    if (shouldIgnore) next.add(file);
+    else next.delete(file);
+  }
+  return next;
 }
 
 /** "2 books · 3 files · 2 files ignored" */
 export function describePackPlan(books: PackBook[], ignored: string[]): string {
   const fileCount = books.reduce((sum, book) => sum + book.files.length, 0);
-  const parts = [plural(books.length, 'book'), plural(fileCount, 'file')];
+  const parts = [
+    books.length === 1 ? t('1 book') : t('{count} books', { count: books.length }),
+    fileCount === 1 ? t('1 file') : t('{count} files', { count: fileCount }),
+  ];
   if (ignored.length > 0) {
-    parts.push(`${plural(ignored.length, 'file')} ignored`);
+    parts.push(
+      ignored.length === 1
+        ? t('1 file ignored')
+        : t('{count} files ignored', { count: ignored.length }),
+    );
   }
   return parts.join(' · ');
 }
